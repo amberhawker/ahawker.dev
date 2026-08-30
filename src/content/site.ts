@@ -11,12 +11,15 @@ export const site = {
   linkedin: "https://www.linkedin.com/in/amber-hawker-8b9473335/",
 } as const;
 
-export const navLinks = [
-  { href: "#about", label: "About" },
-  { href: "#services", label: "Services" },
-  { href: "#work", label: "Work" },
-  { href: "#contact", label: "Contact" },
+export const tabs = [
+  { id: "about", label: "about.md", command: "cat about.md" },
+  { id: "services", label: "services.yml", command: "cat services.yml" },
+  { id: "infra", label: "infra.conf", command: "systemctl status homelab" },
+  { id: "projects", label: "projects/", command: "ls -la ~/projects" },
+  { id: "links", label: "contact.sh", command: "./contact.sh --links" },
 ] as const;
+
+export type TabId = (typeof tabs)[number]["id"];
 
 export const highlights = [
   { value: "MSP", label: "Managed IT operations" },
@@ -85,6 +88,38 @@ export const services = [
   },
 ] as const;
 
+export const infrastructure = {
+  summary:
+    "A production-grade homelab is where I test what later runs for clients: virtualization, segmentation, monitoring, and recovery, all rebuilt often enough to stay honest.",
+  units: [
+    {
+      unit: "hypervisor.service",
+      state: "active (running)",
+      description: "Proxmox cluster hosting VMs and LXC containers with scheduled snapshots.",
+    },
+    {
+      unit: "network.service",
+      state: "active (running)",
+      description: "VLAN-segmented network with a dedicated firewall, VPN access, and DNS filtering.",
+    },
+    {
+      unit: "observability.service",
+      state: "active (running)",
+      description: "Metrics, logs, and alerting across hosts and services so failures surface early.",
+    },
+    {
+      unit: "backup.timer",
+      state: "active (waiting)",
+      description: "Versioned, off-box backups with restores rehearsed rather than assumed.",
+    },
+    {
+      unit: "security-lab.service",
+      state: "active (running)",
+      description: "Isolated segment for hardening, detection tuning, and exploit research.",
+    },
+  ],
+} as const;
+
 export const projects = [
   {
     title: "Managed IT Operations",
@@ -127,6 +162,30 @@ export const projects = [
     description:
       "Scripts and services that connect the systems a business already uses, replacing recurring manual work with scheduled, observable jobs.",
     stack: ["Python", "REST APIs", "PowerShell", "Cron"],
+  },
+] as const;
+
+export const contactLinks = [
+  {
+    key: "EMAIL",
+    label: "Email",
+    value: site.email,
+    href: `mailto:${site.email}`,
+    external: false,
+  },
+  {
+    key: "GITHUB",
+    label: "GitHub",
+    value: "@amberhawker",
+    href: site.github,
+    external: true,
+  },
+  {
+    key: "LINKEDIN",
+    label: "LinkedIn",
+    value: "Amber Hawker",
+    href: site.linkedin,
+    external: true,
   },
 ] as const;
 
