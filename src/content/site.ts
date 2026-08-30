@@ -8,6 +8,7 @@ export const site = {
   url: "https://ahawker.dev",
   email: "ahawker374@gmail.com",
   github: "https://github.com/amberhawker",
+  linkedin: "https://www.linkedin.com/in/amber-hawker-8b9473335/",
 } as const;
 
 export const navLinks = [

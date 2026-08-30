@@ -3,6 +3,7 @@ import { site } from "@/content/site";
 const links = [
   { label: "Email", value: site.email, href: `mailto:${site.email}` },
   { label: "GitHub", value: "@amberhawker", href: site.github },
+  { label: "LinkedIn", value: "Amber Hawker", href: site.linkedin },
 ];
 
 export function Contact() {
