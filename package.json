@@ -12,9 +12,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^7.4.0"
+    "@tailwindcss/vite": "^4.3.3",
+    "animejs": "^4.5.0",
+    "astro": "^7.3.8",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
-    "daisyui": "^5.7.50"
+    "daisyui": "^5.7.47"
   }
 }
