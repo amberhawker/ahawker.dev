@@ -1,2 +1,15 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+:root,
+[data-theme],
+[data-theme="light"] {
+  --font-header: "Redaction 50", Georgia, serif;
+  --font-body: "Natural Mono", ui-monospace, monospace;
+
+  --color-base-100: #ffd8e8;
+  --color-base-200: #fbbdd8;
+  --color-base-300: #f69dc4;
+  --color-base-content: #3d0824;
+  color: black;
+}
