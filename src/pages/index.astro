@@ -1,9 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import SmallProject from '../components/SmallProject.astro';
+import { getCollection } from 'astro:content';
+
+const projects = await getCollection('projects');
+const featured = projects.filter(project => project.data.featured == true);
+
 ---
 
 <Layout>
-	<div class="items-center text-center">
-		<h1 class="text-3xl">Amber Hawker</h1>
-	</div>
+	<main class="max-w-4xl mx-auto px-4 py-12 flex flex-col items-center gap-8">
+		<h1 class="text-4xl font-bold tracking-tight">Amber Hawker</h1>
+		<div class="w-full flex flex-col gap-6">
+			{featured.map((project) => (
+				<SmallProject
+					title = {project.data.title}
+					imgs = {project.data.imgs}
+					shortDesc={project.data.shortDescription}
+				/>
+			))}
+		</div>
+	</main>
 </Layout>

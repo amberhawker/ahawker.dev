@@ -5,7 +5,7 @@ import { defineCollection } from 'astro:content';
 const projects = defineCollection({
     loader: glob({
         pattern: '**/*.json',
-        base: '/.src/data/projects'
+        base: './src/data/projects'
     }),
 
     // TODO: add slug -> dynamic routes to longer description pages
@@ -18,7 +18,8 @@ const projects = defineCollection({
             }).default({path: '', alt: ''})
         ),
         shortDescription: z.string(),
-        longDescription: z.string()
+        longDescription: z.string(),
+        featured: z.boolean()
     })
 })
 
