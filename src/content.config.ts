@@ -8,6 +8,7 @@ const projects = defineCollection({
         base: '/.src/data/projects'
     }),
 
+    // TODO: add slug -> dynamic routes to longer description pages
     schema: z.object({
         title: z.string(),
         imgs: z.array(

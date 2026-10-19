@@ -1,0 +1,27 @@
+---
+import { Image } from 'astro:assets';
+
+interface Img {
+    path: string;
+    alt: string;
+}
+
+interface Props {
+    title: string;
+    imgs: Array<Img>;
+    shortDesc: string;
+    longDesc: string;
+}
+
+const {
+    eventTitle = "",
+    imgs = [{path: '', alt: ''}],
+    shortDesc = "",
+    longDesc = ""
+} = Astro.props;
+
+---
+
+<div>
+    <h1>empty! for now</h1>
+</div>
