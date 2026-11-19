@@ -201,3 +201,25 @@ html.js [data-reveal] {
   .cursor { animation: none; }
   html.js [data-reveal] { opacity: 1; }
 }
+
+.prose-term {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 48rem;
+  line-height: 1.75;
+}
+.prose-term h2 { font-size: 1.5rem; font-weight: 700; margin-top: 0.75rem; }
+.prose-term h2::before { content: "## "; color: var(--color-hot); }
+.prose-term h3 { font-size: 1.25rem; font-weight: 700; }
+.prose-term ul { display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.9rem; }
+.prose-term ul > li::before { content: "- "; color: var(--color-hot); }
+.prose-term ol { list-style: decimal; padding-left: 1.5rem; }
+.prose-term a { text-decoration: underline; text-decoration-color: var(--color-hot); text-underline-offset: 3px; }
+.prose-term a:hover { color: var(--color-hot); }
+.prose-term :not(pre) > code { background: var(--color-blush); border: 1px solid color-mix(in srgb, var(--color-ink) 25%, transparent); border-radius: 4px; padding: 0 0.3rem; font-size: 0.85em; }
+.prose-term pre { background: var(--color-term) !important; color: var(--color-blush); border: 2px solid var(--color-ink); border-radius: 6px; padding: 1rem; overflow-x: auto; font-size: 0.85rem; }
+.prose-term blockquote { border-left: 3px solid var(--color-hot); padding-left: 1rem; color: color-mix(in srgb, var(--color-ink) 80%, transparent); }
+.window-term .prose-term h2, .window-term .prose-term h3 { color: var(--color-blush); }
+.window-term .prose-term a:hover { color: var(--color-mint); }
+.window-term .prose-term :not(pre) > code { background: var(--color-term-2); border-color: color-mix(in srgb, var(--color-blush) 25%, transparent); }

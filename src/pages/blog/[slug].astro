@@ -1,0 +1,31 @@
+---
+export const prerender = false;
+
+import { getEntry, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Window from '../../components/Window.astro';
+
+const { slug = '' } = Astro.params;
+const post = await getEntry('blog', slug);
+if (!post || post.data.draft) return new Response(null, { status: 404 });
+if (post.data.private && !Astro.locals.blogAuthed) return Astro.redirect(`/blog?unlock&next=${encodeURIComponent(`/blog/${slug}`)}`);
+
+const { Content } = await render(post);
+const date = post.data.date.toISOString().slice(0, 10);
+---
+
+<Layout title={post.data.title} description={post.data.description}>
+    <div class="py-10 sm:py-14">
+        <a href="/blog" class="text-sm hover:text-hot">← cd ..</a>
+        <Window title={`~/blog/${post.id}.md`} command={`cat ${post.id}.md`} path="~/blog" class="mt-4" reveal={false}>
+            <header class="mb-8">
+                <p class="text-xs text-ink/60">{post.data.private && <span class="mr-2 rounded bg-ink px-1.5 text-blush">private</span>}<time datetime={post.data.date.toISOString()}>{date}</time>{post.data.tags.length > 0 && ` · ${post.data.tags.map((t) => `#${t}`).join(' ')}`}</p>
+                <h1 class="mt-2 text-4xl font-bold sm:text-5xl"># {post.data.title}</h1>
+                <p class="mt-4 max-w-3xl text-lg leading-relaxed">{post.data.description}</p>
+            </header>
+            <article class="prose-term">
+                <Content />
+            </article>
+        </Window>
+    </div>
+</Layout>

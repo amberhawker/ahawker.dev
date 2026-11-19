@@ -1,8 +1,8 @@
 ---
 import { sections } from '../data/site';
 
-const isHome = Astro.url.pathname === '/';
-const href = (id: string) => (isHome ? `#${id}` : `/#${id}`);
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (id: string) => path === `/${id}` || path.startsWith(`/${id}/`);
 ---
 
 <header class="sticky top-0 z-40 border-b-2 border-ink bg-blush/90 backdrop-blur">
@@ -11,9 +11,13 @@ const href = (id: string) => (isHome ? `#${id}` : `/#${id}`);
             <span class="text-hot">amber</span>@ahawker.dev<span class="text-ink/50">:~$</span>
             <span class="cursor ml-1" aria-hidden="true"></span>
         </a>
-        <nav aria-label="Sections" class="-mx-1 flex max-w-full gap-1 overflow-x-auto text-xs">
+        <nav aria-label="Pages" class="-mx-1 flex max-w-full gap-1 overflow-x-auto text-xs">
             {sections.map((s) => (
-                <a href={href(s.id)} class="whitespace-nowrap rounded px-2 py-1 hover:bg-ink hover:text-blush">
+                <a
+                    href={`/${s.id}`}
+                    aria-current={isActive(s.id) ? 'page' : undefined}
+                    class:list={['whitespace-nowrap rounded px-2 py-1 hover:bg-ink hover:text-blush', isActive(s.id) && 'bg-ink text-blush']}
+                >
                     ./{s.id}
                 </a>
             ))}

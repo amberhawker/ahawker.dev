@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+    posts: CollectionEntry<'blog'>[];
+    term?: boolean;
+}
+
+const { posts, term = false } = Astro.props;
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+{posts.length === 0 ? (
+    <p class="opacity-60">total 0 — nothing here yet.</p>
+) : (
+    <ul class:list={['flex flex-col divide-y', term ? 'divide-blush/10' : 'divide-ink/10']}>
+        {posts.map((post) => (
+            <li class="grid gap-x-6 gap-y-1 py-4 sm:grid-cols-[7rem_1fr]">
+                <time datetime={post.data.date.toISOString()} class="text-sm opacity-55">{fmt(post.data.date)}</time>
+                <div>
+                    <a href={`/blog/${post.id}`} class:list={['text-lg font-bold hover:underline', term ? 'text-mint' : 'text-hot']}>
+                        {post.data.title}
+                    </a>
+                    <p class="mt-1 text-sm opacity-80">{post.data.description}</p>
+                    {post.data.tags.length > 0 && (
+                        <p class:list={['mt-2 text-xs', term ? 'text-rose' : 'text-ink/60']}>{post.data.tags.map((t) => `#${t}`).join(' ')}</p>
+                    )}
+                </div>
+            </li>
+        ))}
+    </ul>
+)}

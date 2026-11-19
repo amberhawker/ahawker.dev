@@ -4,8 +4,9 @@ import Window from '../components/Window.astro';
 import Terminal from '../components/Terminal.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { getCollection } from 'astro:content';
-import { profile, experience, education, stack, links } from '../data/site';
+import { profile, education, stack, links } from '../data/site';
 
+const experience = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order);
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const featured = projects.filter((project) => project.data.featured);
 const others = projects.filter((project) => !project.data.featured);
@@ -31,8 +32,8 @@ const shortcuts = [
 			<p class="mt-6 max-w-xl text-base leading-relaxed sm:text-lg">{profile.tagline}</p>
 
 			<div class="mt-8 flex flex-wrap gap-3">
-				<a href="#projects" class="btn btn-tactile bg-hot text-white">ls ~/projects</a>
-				<a href="#contact" class="btn btn-tactile bg-paper text-ink">./contact.sh</a>
+				<a href="/projects" class="btn btn-tactile bg-hot text-white">ls ~/projects</a>
+				<a href="/contact" class="btn btn-tactile bg-paper text-ink">./contact.sh</a>
 			</div>
 
 			<ul class="mt-10 flex flex-wrap gap-3 sm:gap-5" aria-label="Terminal shortcuts">
@@ -79,17 +80,18 @@ const shortcuts = [
 					<dd>{profile.pronouns}</dd>
 				</dl>
 			</div>
+			<p class="mt-6 text-right text-sm"><a href="/about" class="text-hot underline">more about me →</a></p>
 		</Window>
 
 		<!-- Experience -->
 		<Window id="experience" title="experience.log — tail" command="cat experience.log" term>
 			<h2 class="mb-6 text-3xl font-bold text-blush sm:text-4xl">Experience</h2>
 			<ol class="flex flex-col gap-8 border-l border-blush/25 pl-5">
-				{experience.map((role) => (
+				{experience.map(({ id, data: role }) => (
 					<li class="relative">
 						<span class="absolute top-1.5 -left-[1.6rem] h-2.5 w-2.5 rounded-full bg-mint" aria-hidden="true"></span>
 						<h3 class="text-xl font-bold text-blush">
-							{role.title} <span class="font-body text-sm font-normal text-rose">@ {role.org}</span>
+							<a href={`/experience#${id}`} class="hover:text-mint">{role.title}</a> <span class="font-body text-sm font-normal text-rose">@ {role.org}</span>
 						</h3>
 						<p class="mt-2 max-w-3xl text-sm leading-relaxed text-blush/80">{role.summary}</p>
 						<p class="mt-3 text-xs text-mint/90">{role.stack.join(' · ')}</p>
@@ -103,6 +105,7 @@ const shortcuts = [
 					<p class="mt-2 text-sm text-blush/80">{education.program}</p>
 				</li>
 			</ol>
+			<p class="mt-6 text-right text-sm"><a href="/experience" class="text-mint underline">full experience log →</a></p>
 		</Window>
 
 		<!-- Projects -->
@@ -128,7 +131,7 @@ const shortcuts = [
 					))}
 				</ul>
 				<p class="mt-5 text-xs text-blush/55">
-					more on <a href="https://github.com/amberhawker" class="text-rose underline" target="_blank" rel="noopener">github.com/amberhawker ↗</a>
+					<a href="/projects" class="text-mint underline">all projects with filters →</a> · more on <a href="https://github.com/amberhawker" class="text-rose underline" target="_blank" rel="noopener">github.com/amberhawker ↗</a>
 				</p>
 			</Window>
 		</section>
@@ -140,6 +143,7 @@ const shortcuts = [
 {stack.map((g, i) => (
 <span>  <span class="text-rose">"{g.group}"</span>: [{g.items.map((item, j) => <span><span class="text-mint">"{item}"</span>{j < g.items.length - 1 && ', '}</span>)}]{i < stack.length - 1 && ','}
 </span>))}{'}'}</code></pre>
+			<p class="mt-6 text-right text-sm"><a href="/stack" class="text-mint underline">where I use each tool →</a></p>
 		</Window>
 
 		<!-- Contact -->

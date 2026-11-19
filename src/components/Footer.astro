@@ -9,7 +9,7 @@ const year = new Date().getFullYear();
         <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
             <span class="bg-mint px-1.5 text-ink">[ahawker]</span>
             {sections.map((s, i) => (
-                <a href={`/#${s.id}`} class="hover:text-mint">{i}:{s.id}</a>
+                <a href={`/${s.id}`} class="hover:text-mint">{i}:{s.id}</a>
             ))}
         </div>
         <p class="text-blush/70">&copy; {year} {profile.name} · built with Astro</p>

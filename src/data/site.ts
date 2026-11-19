@@ -13,42 +13,32 @@ export const profile = {
     'I enjoy working on interesting technical challenges and meeting new people — you might see me bouncing between tasks and chatting at the same time.',
   ],
   focus: ['Software', 'Systems', 'Robotics'],
+  principle:
+    'I care about systems that are documented, observable, and boring to operate. Good infrastructure should be something you stop thinking about.',
 } as const;
 
-export interface Role {
-  id: string;
-  title: string;
-  org: string;
-  summary: string;
-  stack: string[];
-}
-
-export const experience: Role[] = [
+export const focusAreas = [
   {
-    id: 'cmit',
-    title: 'Technical Lead',
-    org: 'CMIT Solutions Kelowna',
-    summary:
-      'Operate production infrastructure for approximately 150 endpoints. Design segmented EdgeRouter/FortiGate networks, Proxmox VE clusters, ZFS storage, Caddy reverse-proxy routing, and systemd orchestration across Debian and Arch Linux.',
-    stack: ['Proxmox VE', 'ZFS', 'Caddy', 'systemd', 'Docker', 'FortiGate', 'SentinelOne', 'Huntress', 'ScreenConnect'],
+    title: 'Robotics & distributed systems',
+    text: 'ROS 2 node architectures that connect sensor fusion pipelines, real-time message passing, state estimation, and autonomy loops into a system that must behave predictably without a network.',
+    stack: ['ROS 2 Jazzy / Humble', 'Python', 'C++'],
   },
   {
-    id: 'okmr',
-    title: 'Software Lead',
-    org: 'UBCO Marine Robotics (OKMR)',
-    summary:
-      'Autonomy software for Ogopogo, an autonomous underwater vehicle. ROS 2 node architectures connect sensor fusion, real-time messaging, state estimation, and autonomy loops into a system that has to behave predictably without a network.',
-    stack: ['ROS 2 Jazzy / Humble', 'Python', 'C++', 'Devcontainers'],
+    title: 'Tooling & automation',
+    text: 'Headless browser automation and resilient scrapers with Playwright, structured ETL pipelines with Python, Pandas, and openpyxl, custom API integrations, and CLI utilities that make operational work repeatable, testable, and observable.',
+    stack: ['Playwright', 'Python', 'Pandas', 'openpyxl', 'REST APIs'],
   },
   {
-    id: 'git',
-    title: 'Technical Manager',
-    org: 'Girls in Tech UBCO (ACM-W student chapter)',
-    summary:
-      'Built and maintain the club website, girlsintech.ca — an Astro site with an in-browser admin editor so the exec team can update events, execs, and gallery content without touching code.',
-    stack: ['Astro', 'Tailwind CSS', 'DaisyUI', 'Cloudflare Workers'],
+    title: 'Systems & infrastructure',
+    text: 'Segmented networks, Proxmox VE clusters, ZFS storage, Caddy reverse-proxy routing, and systemd orchestration across Debian and Arch Linux.',
+    stack: ['Proxmox VE', 'ZFS', 'Caddy', 'systemd', 'Docker'],
   },
-];
+  {
+    title: 'Full-stack & web systems',
+    text: 'Web systems with Astro, Next.js, React, and TypeScript, with clear application boundaries, practical state management, and services that stay understandable after the first implementation.',
+    stack: ['Astro', 'Next.js', 'React', 'TypeScript'],
+  },
+] as const;
 
 export const education = {
   program: 'Computer Science',
@@ -87,5 +77,6 @@ export const sections = [
   { id: 'experience', file: 'experience.log', command: 'cat experience.log' },
   { id: 'projects', file: 'projects/', command: 'ls ~/projects' },
   { id: 'stack', file: 'stack.json', command: 'cat stack.json' },
+  { id: 'blog', file: 'blog/', command: 'cd ~/blog' },
   { id: 'contact', file: 'contact.sh', command: './contact.sh' },
 ] as const;

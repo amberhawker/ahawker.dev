@@ -1,0 +1,55 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Window from '../components/Window.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { profile, focusAreas, education } from '../data/site';
+---
+
+<Layout title="About" description={profile.about[0]}>
+    <PageHeader command="cat about.txt" title="About" lead={profile.tagline} />
+
+    <div class="flex flex-col gap-10">
+        <Window title="about.txt — less" path="~">
+            <div class="grid gap-8 md:grid-cols-[1fr_16rem]">
+                <div class="flex flex-col gap-4 leading-relaxed">
+                    {profile.about.map((p) => <p>{p}</p>)}
+                    <blockquote class="border-l-4 border-hot pl-4 text-ink/85 italic">{profile.principle}</blockquote>
+                </div>
+                <dl class="self-start rounded-md border-2 border-ink bg-blush/60 p-4 text-xs leading-6">
+                    <dt class="font-bold text-hot">NAME</dt>
+                    <dd>{profile.name} ({profile.pronouns})</dd>
+                    <dt class="mt-3 font-bold text-hot">BASE</dt>
+                    <dd>{profile.base}</dd>
+                    <dt class="mt-3 font-bold text-hot">ROLES</dt>
+                    <dd>{profile.roles.join(' / ')}</dd>
+                    <dt class="mt-3 font-bold text-hot">FOCUS</dt>
+                    <dd>{profile.focus.join(' / ')}</dd>
+                </dl>
+            </div>
+        </Window>
+
+        <Window title="focus.md — what I work on" command="cat focus.md" term>
+            <ul class="grid gap-6 md:grid-cols-2">
+                {focusAreas.map((area, i) => (
+                    <li class="rounded-md border border-blush/20 bg-term-2/50 p-5">
+                        <p class="text-xs text-blush/50">0{i + 1}</p>
+                        <h2 class="mt-1 text-xl font-bold text-blush">{area.title}</h2>
+                        <p class="mt-3 text-sm leading-relaxed text-blush/80">{area.text}</p>
+                        <p class="mt-3 text-xs text-mint/90">{area.stack.join(' · ')}</p>
+                    </li>
+                ))}
+            </ul>
+        </Window>
+
+        <Window title="education.txt" command="cat education.txt">
+            <h2 class="text-2xl font-bold">{education.program}</h2>
+            <p class="mt-1 text-ink/80">{education.school}</p>
+        </Window>
+
+        <nav class="flex flex-wrap gap-3 text-sm" aria-label="Next">
+            <a href="/experience" class="btn btn-tactile bg-hot text-white">cat experience.log</a>
+            <a href="/projects" class="btn btn-tactile bg-paper text-ink">ls ~/projects</a>
+            <a href="/contact" class="btn btn-tactile bg-paper text-ink">./contact.sh</a>
+        </nav>
+    </div>
+</Layout>

@@ -1,6 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro';
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Window from '../../components/Window.astro';
 import Slider from '../../components/Slider.astro';
@@ -20,12 +20,13 @@ interface Props {
 }
 
 const { project, prev, next } = Astro.props;
-const { title, year, role, imgs, shortDescription, longDescription, highlights, tags, repo, live } = project.data;
+const { title, year, role, imgs, shortDescription, highlights, tags, repo, live } = project.data;
+const { Content } = await render(project);
 ---
 
 <Layout title={title} description={shortDescription}>
 	<div class="py-10 sm:py-14">
-		<a href="/#projects" class="text-sm hover:text-hot">← cd ..</a>
+		<a href="/projects" class="text-sm hover:text-hot">← cd ..</a>
 		<Window
 			title={`README.md — ~/projects/${project.id}`}
 			command="cat README.md"
@@ -42,8 +43,8 @@ const { title, year, role, imgs, shortDescription, longDescription, highlights, 
 
 			<Slider imgs={imgs} class="aspect-[12/5] max-w-3xl" />
 
-			<div class="flex max-w-3xl flex-col gap-4 leading-relaxed">
-				{longDescription.split('\n\n').map((p) => <p>{p}</p>)}
+			<div class="prose-term">
+				<Content />
 			</div>
 
 			{highlights.length > 0 && (

@@ -1,0 +1,77 @@
+---
+export const prerender = false;
+
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Window from '../../components/Window.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import PostList from '../../components/PostList.astro';
+
+const authed = Astro.locals.blogAuthed;
+const error = Astro.url.searchParams.get('error');
+const nextParam = Astro.url.searchParams.get('next') ?? '/blog';
+const next = /^\/blog(\/[\w-]*)?$/.test(nextParam) ? nextParam : '/blog';
+const openUnlock = !authed && (Boolean(error) || Astro.url.searchParams.has('unlock'));
+
+const all = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const publicPosts = all.filter((p) => !p.data.private);
+const privatePosts = all.filter((p) => p.data.private);
+---
+
+<Layout title="Blog" description="Notes and write-ups by Amber Hawker.">
+    <PageHeader command="cd ~/blog" title="Blog" lead="Notes and write-ups. Some posts are private and need a password.">
+        <div class="mt-6">
+            {authed ? (
+                <form method="post" action="/api/blog/logout" class="flex flex-wrap items-center gap-3 text-sm">
+                    <span class="rounded border-2 border-ink bg-mint px-2 py-1 font-bold">unlocked</span>
+                    <button type="submit" class="btn btn-sm btn-tactile bg-paper text-ink">lock again</button>
+                </form>
+            ) : (
+                <details class="group max-w-xl" open={openUnlock}>
+                    <summary class="btn btn-tactile list-none bg-ink text-blush">sudo unlock private posts</summary>
+                    <form method="post" action="/api/blog/login" class="window-term mt-4 flex flex-col gap-3 rounded-md border-2 border-ink p-4 shadow-[4px_4px_0_var(--color-ink)]">
+                        <input type="hidden" name="next" value={next} />
+                        <label for="blog-password" class="text-sm">[sudo] password for reader:</label>
+                        <div class="flex flex-wrap gap-3">
+                            <input
+                                id="blog-password"
+                                name="password"
+                                type="password"
+                                required
+                                autocomplete="current-password"
+                                class="min-w-0 flex-1 rounded border-2 border-blush/30 bg-term-2 px-3 py-2 text-blush caret-mint outline-none focus:border-mint"
+                            />
+                            <button type="submit" class="btn btn-tactile bg-hot text-white">enter</button>
+                        </div>
+                        {error === 'password' && <p class="text-sm text-rose" role="alert">Sorry, try again.</p>}
+                        {error === 'config' && <p class="text-sm text-rose" role="alert">The blog password is not configured on the server yet.</p>}
+                        <p class="text-xs text-blush/55">Don't have the password? <a href="/contact" class="text-mint underline">Ask me</a>.</p>
+                    </form>
+                </details>
+            )}
+        </div>
+    </PageHeader>
+
+    <div class="flex flex-col gap-10">
+        {authed && (
+            <Window title="~/blog/private — ls -lt" command="ls -lt ~/blog/private" path="~/blog" term>
+                <PostList posts={privatePosts} term />
+            </Window>
+        )}
+        <Window title="~/blog — ls -lt" command="ls -lt ~/blog" path="~/blog">
+            <PostList posts={publicPosts} />
+            {!authed && privatePosts.length > 0 && (
+                <p class="mt-6 border-t-2 border-dashed border-ink/20 pt-4 text-sm text-ink/60">
+                    drwx------ private/ — {privatePosts.length} locked post{privatePosts.length === 1 ? '' : 's'}.{' '}
+                    <a href="/blog?unlock" class="text-hot underline">unlock</a>
+                </p>
+            )}
+        </Window>
+    </div>
+</Layout>
+
+<script>
+    document.querySelector<HTMLDetailsElement>('details')?.addEventListener('toggle', (e) => {
+        if ((e.target as HTMLDetailsElement).open) document.getElementById('blog-password')?.focus();
+    });
+</script>

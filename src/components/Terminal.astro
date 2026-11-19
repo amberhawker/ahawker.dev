@@ -1,10 +1,14 @@
 ---
 import { getCollection } from 'astro:content';
-import { profile, experience, education, stack, links, sections } from '../data/site';
+import { profile, education, stack, links, sections } from '../data/site';
 
 const projects = (await getCollection('projects'))
     .sort((a, b) => a.data.order - b.data.order)
     .map((p) => ({ id: p.id, title: p.data.title, year: p.data.year, summary: p.data.shortDescription }));
+
+const experience = (await getCollection('experience'))
+    .sort((a, b) => a.data.order - b.data.order)
+    .map((e) => ({ id: e.id, title: e.data.title, org: e.data.org, summary: e.data.summary, stack: e.data.stack }));
 
 const payload = JSON.stringify({ profile, experience, education, stack, links, sections, projects }).replace(/</g, '\\u003c');
 ---
@@ -90,7 +94,6 @@ const payload = JSON.stringify({ profile, experience, education, stack, links, s
         const echoPrompt = (cmd: string) =>
             print(`<span class="prompt-user">amber@ahawker.dev</span>:<span class="prompt-path">~</span>$ ${esc(cmd)}`);
 
-        const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
 
         const out = {
             whoami: () =>
@@ -131,7 +134,7 @@ const payload = JSON.stringify({ profile, experience, education, stack, links, s
                 ['open <project>', 'read a project README'],
                 ['stack', 'tools I reach for'],
                 ['contact', 'how to reach me'],
-                ['cd <section>', 'scroll the page to a section'],
+                ['cd <page>', 'about · experience · projects · stack · blog · contact'],
                 ['ls · history · clear', 'the usual'],
             ]
                 .map(([c, d]) => `<span class="text-mint">${esc(c)}</span><span class="text-blush/55">${esc(d)}</span>`)
@@ -165,7 +168,8 @@ const payload = JSON.stringify({ profile, experience, education, stack, links, s
             cd: (args) => {
                 const target = (args[0] ?? '~').replace(/^(\.\/|~\/)/, '').replace(/\/$/, '');
                 if (target === '~' || target === '' || target === '..') {
-                    window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+                    if (window.location.pathname === '/') window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+                    else window.location.href = '/';
                     return;
                 }
                 const project = findProject(target);
@@ -175,7 +179,7 @@ const payload = JSON.stringify({ profile, experience, education, stack, links, s
                 }
                 const section = data.sections.find((s) => s.id === target || s.file.replace(/\/$/, '') === target);
                 if (!section) return `cd: no such file or directory: ${esc(target)}`;
-                scrollTo(section.id);
+                window.location.href = `/${section.id}`;
             },
             pwd: () => '/home/amber',
             date: () => new Date().toString(),
