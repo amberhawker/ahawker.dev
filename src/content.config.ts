@@ -8,18 +8,24 @@ const projects = defineCollection({
         base: './src/data/projects'
     }),
 
-    // TODO: add slug -> dynamic routes to longer description pages
     schema: z.object({
         title: z.string(),
+        year: z.number(),
+        role: z.string().optional(),
         imgs: z.array(
             z.object({
                 path: z.string(),
-                alt: z.string().optional(),
-            }).default({path: '', alt: ''})
-        ),
+                alt: z.string(),
+            })
+        ).default([]),
         shortDescription: z.string(),
         longDescription: z.string(),
-        featured: z.boolean()
+        highlights: z.array(z.string()).default([]),
+        tags: z.array(z.string()).default([]),
+        repo: z.url().optional(),
+        live: z.url().optional(),
+        featured: z.boolean(),
+        order: z.number().default(100),
     })
 })
 

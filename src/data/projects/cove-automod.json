@@ -1,0 +1,15 @@
+{
+    "title": "CoveAutoMod",
+    "year": 2025,
+    "shortDescription": "A C# moderation plugin for Cove, the dedicated Webfishing server, with configurable word categories and Discord notifications.",
+    "longDescription": "CoveAutoMod is a plugin for Cove, a dedicated server for the game Webfishing, that controls how a server handles inappropriate messages. Server owners configure which words trigger which actions, and every action taken can be posted to a Discord channel through a webhook for review.\n\nPlayers can also use a report command so moderators can keep on top of bad actors.",
+    "highlights": [
+        "Granular word categories mapped to moderation actions",
+        "Discord webhook notifications for every action",
+        "In-game report command"
+    ],
+    "tags": ["C#", ".NET", "Discord webhooks"],
+    "repo": "https://github.com/amberhawker/CoveAutoMod",
+    "featured": false,
+    "order": 5
+}

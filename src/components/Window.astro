@@ -1,0 +1,29 @@
+---
+interface Props {
+    title: string;
+    command?: string;
+    path?: string;
+    term?: boolean;
+    class?: string;
+    bodyClass?: string;
+    id?: string;
+    reveal?: boolean;
+}
+
+const { title, command, path = '~', term = false, class: className, bodyClass, id, reveal = true } = Astro.props;
+---
+
+<section id={id} class:list={['window', className]} data-reveal={reveal ? '' : undefined}>
+    <div class="window-bar">
+        <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+        <span class="truncate">{title}</span>
+    </div>
+    <div class:list={[term && 'window-term scanlines', 'p-5 sm:p-7', bodyClass]}>
+        {command && (
+            <p class="mb-5 text-sm break-words">
+                <span class:list={[term ? 'prompt-user' : 'text-hot font-bold']}>amber@ahawker.dev</span>:<span class:list={[term ? 'prompt-path' : 'text-ink/60']}>{path}</span>$ <span>{command}</span>
+            </p>
+        )}
+        <slot />
+    </div>
+</section>

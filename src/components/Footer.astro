@@ -1,0 +1,17 @@
+---
+import { profile, sections } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-16 border-t-2 border-ink bg-ink text-xs text-blush">
+    <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span class="bg-mint px-1.5 text-ink">[ahawker]</span>
+            {sections.map((s, i) => (
+                <a href={`/#${s.id}`} class="hover:text-mint">{i}:{s.id}</a>
+            ))}
+        </div>
+        <p class="text-blush/70">&copy; {year} {profile.name} · built with Astro</p>
+    </div>
+</footer>

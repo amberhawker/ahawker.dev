@@ -1,0 +1,47 @@
+---
+interface Props {
+    imgs: { path: string; alt: string }[];
+    class?: string;
+}
+
+const { imgs, class: className } = Astro.props;
+---
+
+{imgs.length > 0 && (
+    <div class:list={['slider relative w-full overflow-hidden rounded-md border-2 border-ink bg-white', className]}>
+        {imgs.map((img, index) => (
+            <img
+                src={img.path}
+                alt={img.alt}
+                width={1200}
+                height={500}
+                loading="lazy"
+                class:list={['slide h-full w-full object-contain', index > 0 && 'hidden']}
+            />
+        ))}
+        {imgs.length > 1 && (
+            <button
+                type="button"
+                class="slider-next btn btn-xs btn-tactile absolute right-2 bottom-2 bg-blush text-ink"
+                aria-label="Next image"
+            >
+                ❯
+            </button>
+        )}
+    </div>
+)}
+
+<script>
+    document.querySelectorAll<HTMLElement>('.slider').forEach((slider) => {
+        const slides = slider.querySelectorAll<HTMLElement>('.slide');
+        const next = slider.querySelector('.slider-next');
+        if (!next || slides.length <= 1) return;
+
+        let current = 0;
+        next.addEventListener('click', () => {
+            slides[current].classList.add('hidden');
+            current = (current + 1) % slides.length;
+            slides[current].classList.remove('hidden');
+        });
+    });
+</script>
