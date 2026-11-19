@@ -219,7 +219,7 @@ const payload = JSON.stringify({ profile, experience, education, stack, links, s
                       : command === 'open'
                         ? projectIds
                         : command === 'cd'
-                          ? sectionIds
+                          ? [...sectionIds, ...files, ...projectIds]
                           : [...files, ...projectIds, ...sectionIds];
             const matches = pool.filter((c) => c.startsWith(last));
             if (matches.length === 1) {
