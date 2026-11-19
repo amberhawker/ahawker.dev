@@ -44,6 +44,7 @@ const privatePosts = all.filter((p) => p.data.private);
                             <button type="submit" class="btn btn-tactile bg-hot text-white">enter</button>
                         </div>
                         {error === 'password' && <p class="text-sm text-rose" role="alert">Sorry, try again.</p>}
+                        {error === 'rate' && <p class="text-sm text-rose" role="alert">Too many attempts. Wait a minute and try again.</p>}
                         {error === 'config' && <p class="text-sm text-rose" role="alert">The blog password is not configured on the server yet.</p>}
                         <p class="text-xs text-blush/55">Don't have the password? <a href="/contact" class="text-mint underline">Ask me</a>.</p>
                     </form>
