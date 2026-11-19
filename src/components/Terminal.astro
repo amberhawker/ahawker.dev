@@ -148,7 +148,7 @@ const payload = JSON.stringify({ profile, experience, education, stack, links, s
             stack: out.stack,
             contact: out.contact,
             education: () => `${esc(data.education.program)} · ${esc(data.education.school)}`,
-            ls: (args) => (args[0] && /projects/.test(args[0]) ? out.projects() : out.ls()),
+            ls: (args) => (args.some((a) => /projects/.test(a)) ? out.projects() : out.ls()),
             cat: (args) => {
                 const target = args[0] ?? '';
                 if (fileCommands[target]) return fileCommands[target]();
@@ -208,10 +208,19 @@ const payload = JSON.stringify({ profile, experience, education, stack, links, s
         const complete = (value: string) => {
             const parts = value.split(/\s+/);
             const last = parts[parts.length - 1];
+            const command = aliases[parts[0]] ?? parts[0].toLowerCase();
+            const projectIds = data.projects.map((p) => p.id);
+            const sectionIds = data.sections.map((s) => s.id);
             const pool =
                 parts.length === 1
                     ? Object.keys(commands)
-                    : [...files, ...data.projects.map((p) => p.id), ...data.sections.map((s) => s.id)];
+                    : command === 'cat'
+                      ? [...files, ...projectIds]
+                      : command === 'open'
+                        ? projectIds
+                        : command === 'cd'
+                          ? sectionIds
+                          : [...files, ...projectIds, ...sectionIds];
             const matches = pool.filter((c) => c.startsWith(last));
             if (matches.length === 1) {
                 parts[parts.length - 1] = matches[0];
