@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import Window from '../components/Window.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { stack } from '../data/site';
+import type { StackItem } from '../data/site';
 
 const projects = (await getCollection('projects')).sort(
     (a, b) => a.data.order - b.data.order || b.data.year - a.data.year || a.id.localeCompare(b.id),
@@ -11,9 +12,9 @@ const projects = (await getCollection('projects')).sort(
 const roles = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id));
 
 const norm = (s: string) => s.toLowerCase().split(/\s*[/(]\s*/)[0].trim();
-const usedIn = (item: string) => {
-    const key = norm(item);
-    const hit = (tags: string[]) => tags.some((t) => norm(t) === key);
+const usedIn = (item: StackItem) => {
+    const keys = [item.name, ...(item.aliases ?? [])].map(norm);
+    const hit = (tags: string[]) => tags.some((t) => keys.includes(norm(t)));
     return [
         ...roles.filter((r) => hit(r.data.stack)).map((r) => ({ label: r.data.org.replace(/\s*\(.*\)$/, ''), href: `/experience#${r.id}` })),
         ...projects.filter((p) => hit(p.data.tags)).map((p) => ({ label: `${p.id}/`, href: `/projects/${p.id}` })),
@@ -24,32 +25,45 @@ const usedIn = (item: string) => {
 <Layout title="Stack" description="Tools and technologies Amber Hawker works with.">
     <PageHeader command="cat stack.json | jq" title="Stack" lead="The tools I reach for, and where each one shows up in my work." />
 
-    <div class="grid gap-8 md:grid-cols-2">
-        {stack.map((group, i) => (
-            <Window title={`stack.json → .${group.group}`} term={i % 3 === 0} bodyClass="h-full">
-                <h2 class:list={['text-2xl font-bold', i % 3 === 0 && 'text-blush']}>"{group.group}"</h2>
-                <ul class="mt-4 flex flex-col gap-3 text-sm">
-                    {group.items.map((item) => {
-                        const uses = usedIn(item);
-                        return (
-                            <li>
-                                <span class:list={['font-bold', i % 3 === 0 ? 'text-mint' : 'text-hot']}>"{item}"</span>
-                                {uses.length > 0 && (
-                                    <span class="block pl-4 text-xs opacity-75">
-                                        ↳{' '}
-                                        {uses.map((u, j) => (
-                                            <>
-                                                <a href={u.href} class="underline hover:opacity-100">{u.label}</a>
-                                                {j < uses.length - 1 && ', '}
-                                            </>
-                                        ))}
-                                    </span>
-                                )}
-                            </li>
-                        );
-                    })}
-                </ul>
-            </Window>
-        ))}
+    <div class="grid gap-8 lg:grid-cols-[15rem_minmax(0,1fr)] lg:items-start">
+        <Window title="jq 'keys'" command="jq 'keys'" term reveal={false} class="lg:sticky lg:top-20">
+            <pre class="text-sm leading-7"><code><span class="text-blush">[</span>
+{stack.map((g, i) => (
+<span>  <span class="text-blush">"</span><a href={`#${g.group}`} class="text-mint">{g.group}</a><span class="text-blush">"</span>{i < stack.length - 1 && <span class="text-blush">,</span>} <span class="opacity-60">// {g.items.length}</span>
+</span>))}<span class="text-blush">]</span></code></pre>
+        </Window>
+
+        <div class="flex flex-col gap-8">
+            {stack.map((group) => (
+                <Window id={group.group} title={`stack.json → .${group.group}`}>
+                    <h2 class="text-2xl font-bold sm:text-3xl">"{group.group}"</h2>
+                    <p class="mt-2 max-w-prose text-sm opacity-80">{group.blurb}</p>
+                    <dl class="mt-5">
+                        {group.items.map((item) => {
+                            const uses = usedIn(item);
+                            return (
+                                <div class="grid gap-1 border-t border-dashed border-ink/25 py-3 sm:grid-cols-[13rem_minmax(0,1fr)] sm:gap-6">
+                                    <dt class="font-bold text-hot">"{item.name}"</dt>
+                                    <dd class="text-sm">
+                                        {item.note}
+                                        {uses.length > 0 && (
+                                            <span class="block text-xs opacity-75">
+                                                ↳{' '}
+                                                {uses.map((u, j) => (
+                                                    <>
+                                                        <a href={u.href} class="underline hover:opacity-100">{u.label}</a>
+                                                        {j < uses.length - 1 && ', '}
+                                                    </>
+                                                ))}
+                                            </span>
+                                        )}
+                                    </dd>
+                                </div>
+                            );
+                        })}
+                    </dl>
+                </Window>
+            ))}
+        </div>
     </div>
 </Layout>

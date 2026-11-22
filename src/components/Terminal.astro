@@ -52,7 +52,7 @@ const payload = JSON.stringify({ profile, experience, education, stack, links, s
         profile: { name: string; pronouns: string; roles: string[]; base: string; tagline: string; about: string[]; focus: string[] };
         experience: { id: string; title: string; org: string; summary: string; stack: string[] }[];
         education: { program: string; school: string };
-        stack: { group: string; items: string[] }[];
+        stack: { group: string; items: { name: string }[] }[];
         links: { id: string; label: string; value: string; href: string }[];
         sections: { id: string; file: string; command: string }[];
         projects: Project[];
@@ -110,7 +110,7 @@ const payload = JSON.stringify({ profile, experience, education, stack, links, s
             stack: () =>
                 '{\n' +
                 data.stack
-                    .map((g) => `  ${rose('"' + esc(g.group) + '"')}: [${g.items.map((i) => mint('"' + esc(i) + '"')).join(', ')}]`)
+                    .map((g) => `  ${rose('"' + esc(g.group) + '"')}: [${g.items.map((i) => mint('"' + esc(i.name) + '"')).join(', ')}]`)
                     .join(',\n') +
                 '\n}',
             contact: () =>
