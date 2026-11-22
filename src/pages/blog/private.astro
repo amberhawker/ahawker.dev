@@ -11,16 +11,18 @@ const nextParam = Astro.url.searchParams.get('next') ?? '/blog/private';
 const next = /^\/blog(\/[\w-]*)?$/.test(nextParam) ? nextParam : '/blog/private';
 
 const nopes = [
-    'nope. the lock is unimpressed.',
-    'wrong! the goblin guarding this door is laughing at you.',
-    "that's not it, chief.",
-    'access denied. have you tried "password123"? (also wrong)',
-    'beep boop. incorrect. self-destruct cancelled, this time.',
+    'nope! sorry bro.',
+    'chilllll.',
+    "zzzzzzzzz...",
+    'nope. have you tried "invalid"?',
+    'beep boop. incorrect. this is awkward.',
+    'this message will self destruct in ...',
+    'if you want access: one million dollars, mr powers...'
 ];
 const errorText =
     error === 'password' ? nopes[Math.floor(Math.random() * nopes.length)]
-    : error === 'rate' ? 'whoa, too many guesses. go touch grass for a minute.'
-    : error === 'config' ? 'the vault has no lock installed yet. ask amber to set BLOG_PASSWORD.'
+    : error === 'rate' ? 'whoa, too many guesses. chill out for a min.'
+    : error === 'config' ? 'oops! i forgot to set a password :P.'
     : null;
 
 const posts = authed
@@ -28,33 +30,30 @@ const posts = authed
     : [];
 
 const lockedArt = String.raw`
-     .--------.
-    / .------. \
-   / /        \ \
-   | |        | |
-  _| |________| |_
-.' |_|        |_| '.
-'._____ ____ _____.'
-|     .'____'.     |
-'.__.'.'    '.'.__.'
-'.__  | KEEP |  __.'
-|   '.'.____.'.'   |
-'.____'.____.'____.'`;
+   /\_/\
+       ( -.- ) zzz
+.-----(")---(")-----.
+| .---------------. |
+| | > sudo cd     | |
+| | ACCESS DENIED | |
+| | > _           | |
+| '---------------' |
+'-------------------'
+     _|_______|_
+    /___________\ `;
 
 const unlockedArt = String.raw`
-     .--------.
-    / .------. \
-   / /        \ \
-   | |        | |
-   | |        |_|
-  _| |____________
-.' |_|            '.
-'._____ ____ _____.'
-|     .'____'.     |
-'.__.'.' HI '.'.__.'
-'.__  | BFF! |  __.'
-|   '.'.____.'.'   |
-'.____'.____.'____.'`;
+        /\_/\
+       ( ^.^ ) hi!
+.-----(")---(")-----.
+| .---------------. |
+| | > ./welcome   | |
+| | ACCESS GRANTED| |
+| | hi bestie! <3 | |
+| '---------------' |
+'-------------------'
+     _|_______|_
+    /___________\ `;
 ---
 
 <Layout title="private" description="Top secret. Very serious. Mostly snacks." term>
@@ -69,8 +68,8 @@ const unlockedArt = String.raw`
                     <div class="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-end sm:text-left">
                         <pre class="vault-art text-mint" aria-hidden="true">{unlockedArt}</pre>
                         <div>
-                            <h1 class="text-4xl font-bold text-blush sm:text-5xl">you're in.</h1>
-                            <p class="mt-2 text-rose">secret handshake accepted. don't tell anyone.</p>
+                            <h1 class="text-4xl font-bold text-blush sm:text-5xl">GOAT</h1>
+                            <p class="mt-2 text-rose">woah how'd you get in here?!</p>
                         </div>
                     </div>
                     <PostList posts={posts} term />
@@ -82,8 +81,8 @@ const unlockedArt = String.raw`
                 <form method="post" action="/api/blog/login" class="flex flex-col items-center gap-6 text-center">
                     <pre class:list={['vault-art text-rose', errorText && 'vault-shake']} aria-hidden="true">{lockedArt}</pre>
                     <div>
-                        <h1 class="text-4xl font-bold text-blush sm:text-5xl">halt! who goes there?</h1>
-                        <p class="mt-2 text-rose">speak, friend, and enter.</p>
+                        <h1 class="text-4xl font-bold text-blush sm:text-5xl">yoooo! hey chat</h1>
+                        <p class="mt-2 text-rose">but do you have the password?...</p>
                     </div>
                     <input type="hidden" name="next" value={next} />
                     <div class="flex w-full max-w-md flex-wrap gap-3">
@@ -92,10 +91,9 @@ const unlockedArt = String.raw`
                             id="blog-password"
                             name="password"
                             type="password"
-                            required
                             autofocus
                             autocomplete="current-password"
-                            placeholder="the magic word"
+                            placeholder="epic password"
                             class="min-w-0 flex-1 rounded border-2 border-blush/30 bg-term-2 px-3 py-2 text-blush caret-mint outline-none placeholder:text-blush/35 focus:border-mint"
                         />
                         <button type="submit" class="btn btn-tactile bg-mint text-ink">let me in</button>
@@ -112,6 +110,17 @@ const unlockedArt = String.raw`
         font-size: 0.7rem;
         line-height: 1.15;
         margin: 0;
+        color: #f5a9b8;
+        background: linear-gradient(
+            to bottom,
+            #5bcefa 0% 20%,
+            #f5a9b8 20% 40%,
+            #ffffff 40% 60%,
+            #f5a9b8 60% 80%,
+            #5bcefa 80% 100%
+        );
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     .vault-shake {
         animation: vault-shake 0.45s ease-in-out 2;
