@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://ahawker.dev',
+  session: false,
   adapter: cloudflare({
     imageService: 'compile',
   }),
