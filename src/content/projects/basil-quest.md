@@ -6,7 +6,6 @@ tags: ["Nuxt", "Vue", "TypeScript"]
 repo: "https://github.com/amberhawker/basil.quest"
 live: "https://basil.quest"
 featured: false
-order: 9
 ---
 
-basil.quest is a Nuxt and Vue site with a landing page and a modpack download page.
+basil.quest is a Nuxt and Vue site with a landing page and a modpack download page. It was made as a simple project to learn Nuxt and Vue, as well as to easily share a modpack with my community.

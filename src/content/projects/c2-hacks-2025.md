@@ -9,7 +9,6 @@ highlights:
 tags: ["Next.js", "TypeScript", "C++", "CMake"]
 repo: "https://github.com/amberhawker/c2-hacks-2025"
 featured: false
-order: 4
 ---
 
 Built for C2 Hacks 2025. The front end is a Next.js and TypeScript app with sign-up and login via NextAuth, per-chat pages, and components for messages, streaks, and tasks.

@@ -5,7 +5,6 @@ shortDescription: "A coffee and caffeine tracker written to learn Rust, inspired
 tags: ["Rust"]
 repo: "https://github.com/amberhawker/coffee-tracker-rs"
 featured: false
-order: 7
 ---
 
 A small coffee and caffeine tracker I started because I wanted to learn Rust, pushed along by Hack Club Arcade. It is a learning project and still a work in progress.

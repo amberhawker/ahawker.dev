@@ -15,3 +15,5 @@ order: 3
 LinkedIn Follower reads a table of organisations from an .xlsx file, enriches it using the Hatz AI API and web search, and then works through the list one by one, following each organisation on LinkedIn in an automated browser session.
 
 It is designed to be restartable: if the run crashes, starting it again picks up from where it left off. Setup is a single script that opens a browser for the LinkedIn login.
+
+As well, this project was designed for a real user, so it has shown me the importance of building with user experience in mind, and how to iterate on a project based on user feedback.

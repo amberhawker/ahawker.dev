@@ -7,7 +7,7 @@ imgs:
     alt: "UBC Okanagan Girls In Tech, ACM-W Student Chapter logo"
   - path: "/assets/projects/git/git2.png"
     alt: "UBC Okanagan Girls In Tech logo with transparent background"
-shortDescription: "The website for UBC Okanagan Girls in Tech, an ACM-W student chapter — retro desktop styling, animated sections, and an admin editor so the club can manage its own content."
+shortDescription: "The website for UBC Okanagan Girls in Tech, an ACM-W student chapter - retro desktop styling, animated sections, and an admin editor so the club can manage its own content."
 highlights:
   - "Astro content collections for events, execs, sponsors, and links"
   - "Session-based /admin editor that persists changes through the GitHub API"
@@ -17,10 +17,10 @@ tags: ["Astro", "TypeScript", "Tailwind CSS", "DaisyUI", "anime.js", "Cloudflare
 repo: "https://github.com/amberhawker/GIT_web"
 live: "https://girlsintech.ca"
 featured: true
-order: 1
+order: 2
 ---
 
-girlsintech.ca is the home of UBC Okanagan Girls in Tech, a student-led club and ACM-W student chapter. The site covers the club's events, exec team, gallery, sponsors, and contact links, styled as a pink retro desktop with Windows XP-style windows, desktop shortcut icons, and anime.js scroll animations.
+girlsintech.ca is the home of UBC Okanagan Girls in Tech, a student-led club. The site covers the club's events, exec team, gallery, sponsors, and contact links, styled as a pink retro desktop with Windows XP-style windows, desktop shortcut icons, and anime.js scroll animations.
 
 Content lives in Astro content collections as JSON files. A password-protected /admin page lets the exec team edit events, execs, and gallery images in the browser; in production those edits are committed back to the repository through the GitHub API, and locally they write straight to the workspace.
 

@@ -6,7 +6,6 @@ tags: ["Nuxt", "Vue", "TypeScript"]
 repo: "https://github.com/amberhawker/ily-because"
 live: "https://ily-because.vercel.app"
 featured: false
-order: 8
 ---
 
-Just a little project I made for Valentine's Day 2024 — something I had wanted to build for over a year. It is a Nuxt 3 app deployed on Vercel.
+Just a little project I made for Valentine's Day 2024 - something I had wanted to build for over a year. It is a Nuxt 3 app deployed on Vercel.
