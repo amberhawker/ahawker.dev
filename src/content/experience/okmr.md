@@ -1,14 +1,14 @@
 ---
 title: "Software Lead"
-org: "UBCO Marine Robotics (OKMR)"
-summary: "Autonomy software for Ogopogo, an autonomous underwater vehicle. ROS 2 node architectures connect sensor fusion, real-time messaging, state estimation, and autonomy loops into a system that has to behave predictably without a network."
-stack: ["ROS 2 Jazzy / Humble", "Python", "C++", "Devcontainers"]
+org: "UBC Okanagan Marine Robotics"
+summary: "Managed software for Ogopogo, an autonomous underwater vehicle. ROS 2 node architectures connect sensor fusion, real-time messaging, state estimation, and autonomy loops into a system that has to behave predictably without a network or user input."
+stack: ["ROS 2 Jazzy", "Python", "C++", "Devcontainers", "Github Actions", "Unity", "PID & Dead Reckoning Control Systems"]
 related: ["okmr-auv"]
 link: "https://okmarinerobotics.com"
 order: 2
 ---
 
-I architect autonomy software for Ogopogo, UBC Okanagan Marine Robotics' autonomous underwater vehicle. ROS 2 Jazzy/Humble node architectures connect sensor fusion pipelines, real-time message passing, state estimation, and autonomy loops into a system that must behave predictably without a network.
+I architect autonomy software for Ogopogo, UBC Okanagan Marine Robotics' autonomous underwater vehicle. ROS 2 Jazzy node architectures connect sensor fusion pipelines, real-time message passing, state estimation, and autonomy loops into a system that must behave predictably and efficiently without a network or operator.
 
 ## In the codebase
 
@@ -16,4 +16,4 @@ The OKMR AUV repository is split into ROS 2 packages per area of the system: con
 
 - Devcontainer setup so every team member works in the same environment
 - A first pass at CI built on that devcontainer
-- Custom ROS 2 message definitions for perception output, such as `BoundingBox`
+- Custom ROS 2 message definitions for systems output, such as `BoundingBox`
