@@ -193,6 +193,19 @@ h3,
   );
 }
 
+html:has(body.term-page),
+body.term-page {
+  background-color: var(--color-term);
+  color: var(--color-blush);
+}
+body.term-page { background-size: auto; }
+.term-page > header { background: color-mix(in srgb, var(--color-term) 90%, transparent); border-color: var(--color-term-2); }
+.term-page > header .text-paper { color: var(--color-mint); }
+.term-page > header .text-ink\/70 { color: var(--color-rose); }
+.term-page > header nav a:hover,
+.term-page > header nav a[aria-current] { background: var(--color-term-2); }
+.term-page > footer { border-color: var(--color-term-2); }
+
 html.js [data-reveal] {
   opacity: 0;
 }

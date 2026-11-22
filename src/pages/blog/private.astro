@@ -3,7 +3,6 @@ export const prerender = false;
 
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import Window from '../../components/Window.astro';
 import PostList from '../../components/PostList.astro';
 
 const authed = Astro.locals.blogAuthed;
@@ -58,17 +57,13 @@ const unlockedArt = String.raw`
 '.____'.____.'____.'`;
 ---
 
-<Layout title="private" description="Top secret. Very serious. Mostly snacks.">
-    <div class="py-10 sm:py-14">
-        <a href="/blog" class="text-sm hover:text-hot">← cd ..</a>
-        <Window
-            title={authed ? '~/blog/private — welcome to the clubhouse' : '~/blog/private — permission denied'}
-            command={authed ? 'ls -lt ~/blog/private' : 'sudo cd ~/blog/private'}
-            path="~/blog"
-            term
-            reveal={false}
-            class="mx-auto mt-4 max-w-3xl"
-        >
+<Layout title="private" description="Top secret. Very serious. Mostly snacks." term>
+    <div class="mx-auto max-w-3xl py-10 sm:py-14">
+        <a href="/blog" class="text-sm hover:text-mint">← cd ..</a>
+        <p class="mt-6 mb-8 text-sm break-words">
+            <span class="prompt-user">amber@ahawker.dev</span>:<span class="prompt-path">~/blog</span>$ <span>{authed ? 'ls -lt ~/blog/private' : 'sudo cd ~/blog/private'}</span>
+        </p>
+        <div>
             {authed ? (
                 <div class="flex flex-col gap-8">
                     <div class="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-end sm:text-left">
@@ -108,7 +103,7 @@ const unlockedArt = String.raw`
                     {errorText && <p class="text-sm text-rose" role="alert">{errorText}</p>}
                 </form>
             )}
-        </Window>
+        </div>
     </div>
 </Layout>
 
