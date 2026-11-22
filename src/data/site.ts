@@ -43,6 +43,10 @@ export const focusAreas = [
 export const education = {
   program: 'Computer Science BSc',
   school: 'University of British Columbia, Okanagan',
+  honours: [
+    'Dean’s Scholar',
+    'Deputy Vice-Chancellor Scholarship for Continuing Students',
+  ],
 };
 
 export interface StackItem { name: string; note?: string; aliases?: string[] }

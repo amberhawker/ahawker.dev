@@ -54,6 +54,9 @@ const entries = await Promise.all(
             <h2 class="text-3xl font-bold">Student</h2>
             <p class="mt-1 text-sm text-hot">@ {education.school}</p>
             <p class="mt-4">{education.program}</p>
+            <ul class="mt-4 list-disc space-y-1 pl-5 text-sm">
+                {education.honours.map((honour) => <li>{honour}</li>)}
+            </ul>
         </Window>
     </div>
 </Layout>

@@ -44,6 +44,9 @@ import { profile, focusAreas, education } from '../data/site';
         <Window title="education.txt" command="cat education.txt">
             <h2 class="text-2xl font-bold">{education.program}</h2>
             <p class="mt-1 text-ink/80">{education.school}</p>
+            <ul class="mt-4 list-disc space-y-1 pl-5 text-sm">
+                {education.honours.map((honour) => <li>{honour}</li>)}
+            </ul>
         </Window>
 
         <nav class="flex flex-wrap gap-3 text-sm" aria-label="Next">

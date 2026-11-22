@@ -105,6 +105,9 @@ const shortcuts = [
 						Student <span class="font-body text-sm font-normal text-rose">@ {education.school}</span>
 					</h3>
 					<p class="mt-2 text-sm text-blush/80">{education.program}</p>
+					<ul class="mt-3 list-disc space-y-1 pl-5 text-sm text-blush/80">
+						{education.honours.map((honour) => <li>{honour}</li>)}
+					</ul>
 				</li>
 			</ol>
 			<p class="mt-6 text-right text-sm"><a href="/experience" class="text-mint underline">full experience log →</a></p>
