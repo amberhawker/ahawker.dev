@@ -26,7 +26,7 @@ const { Content } = await render(project);
 
 <Layout title={title} description={shortDescription}>
 	<div class="py-10 sm:py-14">
-		<a href="/projects" class="text-sm hover:text-hot">← cd ..</a>
+		<a href="/projects" class="text-sm hover:text-paper">← cd ..</a>
 		<Window
 			title={`README.md — ~/projects/${project.id}`}
 			command="cat README.md"
@@ -74,8 +74,8 @@ const { Content } = await render(project);
 		</Window>
 
 		<nav class="mt-8 flex flex-wrap justify-between gap-4 text-sm" aria-label="Other projects">
-			{prev ? <a href={`/projects/${prev.id}`} class="hover:text-hot">← {prev.data.title}</a> : <span />}
-			{next && <a href={`/projects/${next.id}`} class="hover:text-hot">{next.data.title} →</a>}
+			{prev ? <a href={`/projects/${prev.id}`} class="hover:text-paper">← {prev.data.title}</a> : <span />}
+			{next && <a href={`/projects/${next.id}`} class="hover:text-paper">{next.data.title} →</a>}
 		</nav>
 	</div>
 </Layout>

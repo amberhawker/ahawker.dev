@@ -42,15 +42,16 @@
   --font-sans: "Natural Mono", ui-monospace, monospace;
   --font-mono: "Natural Mono", ui-monospace, monospace;
 
-  --color-ink: #3d0824;
-  --color-term: #2a0519;
-  --color-term-2: #4a0f2e;
-  --color-blush: #ffd8e8;
-  --color-petal: #fbbdd8;
-  --color-rose: #f69dc4;
-  --color-hot: #e8478f;
+  --color-ink: #3d080c;
+  --color-term: #2a0507;
+  --color-term-2: #4a0f13;
+  --color-blush: #ffd9d6;
+  --color-petal: #fbb5b0;
+  --color-rose: #f27f7f;
+  --color-hot: #d81e2c;
   --color-mint: #4ef2bb;
-  --color-paper: #fff5f9;
+  --color-paper: #fff6f4;
+  --color-page: #ee4b4b;
 }
 
 :root,
@@ -59,11 +60,11 @@
   --font-header: "Redaction 50", Georgia, serif;
   --font-body: "Natural Mono", ui-monospace, monospace;
 
-  --color-base-100: #ffd8e8;
-  --color-base-200: #fbbdd8;
-  --color-base-300: #f69dc4;
-  --color-base-content: #3d0824;
-  --color-primary: #e8478f;
+  --color-base-100: #ffd9d6;
+  --color-base-200: #fbb5b0;
+  --color-base-300: #f27f7f;
+  --color-base-content: #3d080c;
+  --color-primary: #d81e2c;
   --color-primary-content: #ffffff;
 }
 
@@ -75,12 +76,12 @@ html {
 html,
 body {
   font-family: var(--font-body);
-  background-color: var(--color-blush);
+  background-color: var(--color-page);
   color: var(--color-ink);
 }
 
 body {
-  background-image: radial-gradient(rgba(61, 8, 36, 0.14) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(61, 8, 12, 0.22) 1px, transparent 1px);
   background-size: 22px 22px;
 }
 
