@@ -6,7 +6,7 @@ highlights:
   - "Two-way chat between Discord and the game"
   - "Discord bot and webhook integration"
   - "Configurable through a JSON file"
-tags: ["C#", ".NET", "Discord", "Webfishing"]
+tags: ["C#", ".NET", "Discord API", "Webfishing"]
 repo: "https://github.com/amberhawker/FishingTalk"
 featured: false
 ---

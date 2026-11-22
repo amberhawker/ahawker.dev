@@ -8,7 +8,7 @@ highlights:
   - "Thread-pool directory traversal for large archives"
   - "Duplicates moved to a quarantine folder with a full results report"
   - "Planned: transfer metadata from back-of-photo scans onto the matching front scans"
-tags: ["Python", "Multithreading", "SHA-256", "CLI", "File automation"]
+tags: ["Python", "Multithreading", "SHA-256", "CLI", "Automation"]
 featured: false
 ---
 

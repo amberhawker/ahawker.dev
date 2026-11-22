@@ -13,7 +13,7 @@ highlights:
   - "Session-based /admin editor that persists changes through the GitHub API"
   - "anime.js timelines driven by scroll position, with reduced-motion fallbacks"
   - "Deployed to Cloudflare Workers"
-tags: ["Astro", "TypeScript", "Tailwind CSS", "DaisyUI", "anime.js", "Cloudflare Workers"]
+tags: ["Astro", "TypeScript", "Tailwind CSS", "daisyUI", "anime.js", "Cloudflare Workers"]
 repo: "https://github.com/amberhawker/GIT_web"
 live: "https://girlsintech.ca"
 featured: true

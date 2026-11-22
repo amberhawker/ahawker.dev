@@ -7,7 +7,7 @@ highlights:
   - "Bot account reads channel messages and routes them to ChatGPT"
   - "Webhook replies inline, so responses feel conversational rather than like command output"
   - "No prefix or slash commands needed: just message the channel"
-tags: ["Python", "Discord API", "Webhooks", "ChatGPT"]
+tags: ["Python", "Discord API", "Discord webhooks", "ChatGPT"]
 repo: "https://github.com/amberhawker/ChatGPT-Discord-Bot"
 featured: false
 ---
