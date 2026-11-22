@@ -8,7 +8,8 @@ import Window from '../../components/Window.astro';
 const { slug = '' } = Astro.params;
 const post = await getEntry('blog', slug);
 if (!post || post.data.draft) return new Response(null, { status: 404 });
-if (post.data.private && !Astro.locals.blogAuthed) return Astro.redirect(`/blog?unlock&next=${encodeURIComponent(`/blog/${slug}`)}`);
+const secret = post.data.private;
+if (secret && !Astro.locals.blogAuthed) return Astro.redirect(`/blog/private?next=${encodeURIComponent(`/blog/${slug}`)}`);
 
 const { Content } = await render(post);
 const date = post.data.date.toISOString().slice(0, 10);
@@ -16,16 +17,45 @@ const date = post.data.date.toISOString().slice(0, 10);
 
 <Layout title={post.data.title} description={post.data.description}>
     <div class="py-10 sm:py-14">
-        <a href="/blog" class="text-sm hover:text-hot">← cd ..</a>
-        <Window title={`~/blog/${post.id}.md`} command={`cat ${post.id}.md`} path="~/blog" class="mt-4" reveal={false}>
-            <header class="mb-8">
-                <p class="text-xs text-ink/60">{post.data.private && <span class="mr-2 rounded bg-ink px-1.5 text-blush">private</span>}<time datetime={post.data.date.toISOString()}>{date}</time>{post.data.tags.length > 0 && ` · ${post.data.tags.map((t) => `#${t}`).join(' ')}`}</p>
-                <h1 class="mt-2 text-4xl font-bold sm:text-5xl"># {post.data.title}</h1>
+        <a href={secret ? '/blog/private' : '/blog'} class="text-sm hover:text-hot">← cd ..</a>
+        <Window
+            title={secret ? `~/blog/private/${post.id}.md — shhh` : `~/blog/${post.id}.md`}
+            command={secret ? `sudo cat ${post.id}.md` : `cat ${post.id}.md`}
+            path={secret ? '~/blog/private' : '~/blog'}
+            term={secret}
+            class={secret ? 'mt-4 secret-post' : 'mt-4'}
+            reveal={false}
+        >
+            <header class="relative mb-8">
+                {secret && <span class="secret-stamp" aria-hidden="true">top secret</span>}
+                <p class:list={['text-xs', secret ? 'text-rose' : 'text-ink/60']}>{secret && <span class="mr-2 rounded bg-hot px-1.5 text-white">for your eyes only</span>}<time datetime={post.data.date.toISOString()}>{date}</time>{post.data.tags.length > 0 && ` · ${post.data.tags.map((t) => `#${t}`).join(' ')}`}</p>
+                <h1 class:list={['mt-2 text-4xl font-bold sm:text-5xl', secret && 'text-mint']}># {post.data.title}</h1>
                 <p class="mt-4 max-w-3xl text-lg leading-relaxed">{post.data.description}</p>
             </header>
             <article class="prose-term">
                 <Content />
             </article>
+            {secret && <p class="mt-10 border-t-2 border-dashed border-blush/20 pt-4 text-sm text-blush/55">this message will not self-destruct, but please act like it might.</p>}
         </Window>
     </div>
 </Layout>
+
+<style>
+    .secret-stamp {
+        position: absolute;
+        top: -0.5rem;
+        right: 0;
+        border: 3px double var(--color-hot);
+        border-radius: 6px;
+        padding: 0.15rem 0.6rem;
+        color: var(--color-hot);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        transform: rotate(8deg);
+        opacity: 0.85;
+    }
+    :global(.window.secret-post) {
+        box-shadow: 5px 5px 0 var(--color-hot);
+    }
+</style>

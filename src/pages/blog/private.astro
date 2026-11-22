@@ -1,0 +1,134 @@
+---
+export const prerender = false;
+
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Window from '../../components/Window.astro';
+import PostList from '../../components/PostList.astro';
+
+const authed = Astro.locals.blogAuthed;
+const error = Astro.url.searchParams.get('error');
+const nextParam = Astro.url.searchParams.get('next') ?? '/blog/private';
+const next = /^\/blog(\/[\w-]*)?$/.test(nextParam) ? nextParam : '/blog/private';
+
+const nopes = [
+    'nope. the lock is unimpressed.',
+    'wrong! the goblin guarding this door is laughing at you.',
+    "that's not it, chief.",
+    'access denied. have you tried "password123"? (also wrong)',
+    'beep boop. incorrect. self-destruct cancelled, this time.',
+];
+const errorText =
+    error === 'password' ? nopes[Math.floor(Math.random() * nopes.length)]
+    : error === 'rate' ? 'whoa, too many guesses. go touch grass for a minute.'
+    : error === 'config' ? 'the vault has no lock installed yet. ask amber to set BLOG_PASSWORD.'
+    : null;
+
+const posts = authed
+    ? (await getCollection('blog', ({ data }) => data.private && !data.draft)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    : [];
+
+const lockedArt = String.raw`
+     .--------.
+    / .------. \
+   / /        \ \
+   | |        | |
+  _| |________| |_
+.' |_|        |_| '.
+'._____ ____ _____.'
+|     .'____'.     |
+'.__.'.'    '.'.__.'
+'.__  | KEEP |  __.'
+|   '.'.____.'.'   |
+'.____'.____.'____.'`;
+
+const unlockedArt = String.raw`
+     .--------.
+    / .------. \
+   / /        \ \
+   | |        | |
+   | |        |_|
+  _| |____________
+.' |_|            '.
+'._____ ____ _____.'
+|     .'____'.     |
+'.__.'.' HI '.'.__.'
+'.__  | BFF! |  __.'
+|   '.'.____.'.'   |
+'.____'.____.'____.'`;
+---
+
+<Layout title="private" description="Top secret. Very serious. Mostly snacks.">
+    <div class="py-10 sm:py-14">
+        <a href="/blog" class="text-sm hover:text-hot">← cd ..</a>
+        <Window
+            title={authed ? '~/blog/private — welcome to the clubhouse' : '~/blog/private — permission denied'}
+            command={authed ? 'ls -lt ~/blog/private' : 'sudo cd ~/blog/private'}
+            path="~/blog"
+            term
+            reveal={false}
+            class="mx-auto mt-4 max-w-3xl"
+        >
+            {authed ? (
+                <div class="flex flex-col gap-8">
+                    <div class="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-end sm:text-left">
+                        <pre class="vault-art text-mint" aria-hidden="true">{unlockedArt}</pre>
+                        <div>
+                            <h1 class="text-4xl font-bold text-blush sm:text-5xl">you're in.</h1>
+                            <p class="mt-2 text-rose">secret handshake accepted. don't tell anyone.</p>
+                        </div>
+                    </div>
+                    <PostList posts={posts} term />
+                    <form method="post" action="/api/blog/logout">
+                        <button type="submit" class="btn btn-sm btn-tactile bg-hot text-white">lock it back up</button>
+                    </form>
+                </div>
+            ) : (
+                <form method="post" action="/api/blog/login" class="flex flex-col items-center gap-6 text-center">
+                    <pre class:list={['vault-art text-rose', errorText && 'vault-shake']} aria-hidden="true">{lockedArt}</pre>
+                    <div>
+                        <h1 class="text-4xl font-bold text-blush sm:text-5xl">halt! who goes there?</h1>
+                        <p class="mt-2 text-rose">speak, friend, and enter.</p>
+                    </div>
+                    <input type="hidden" name="next" value={next} />
+                    <div class="flex w-full max-w-md flex-wrap gap-3">
+                        <label for="blog-password" class="sr-only">password</label>
+                        <input
+                            id="blog-password"
+                            name="password"
+                            type="password"
+                            required
+                            autofocus
+                            autocomplete="current-password"
+                            placeholder="the magic word"
+                            class="min-w-0 flex-1 rounded border-2 border-blush/30 bg-term-2 px-3 py-2 text-blush caret-mint outline-none placeholder:text-blush/35 focus:border-mint"
+                        />
+                        <button type="submit" class="btn btn-tactile bg-mint text-ink">let me in</button>
+                    </div>
+                    {errorText && <p class="text-sm text-rose" role="alert">{errorText}</p>}
+                </form>
+            )}
+        </Window>
+    </div>
+</Layout>
+
+<style>
+    .vault-art {
+        font-size: 0.7rem;
+        line-height: 1.15;
+        margin: 0;
+    }
+    .vault-shake {
+        animation: vault-shake 0.45s ease-in-out 2;
+    }
+    @keyframes vault-shake {
+        0%, 100% { transform: translateX(0) rotate(0); }
+        20% { transform: translateX(-6px) rotate(-3deg); }
+        40% { transform: translateX(6px) rotate(3deg); }
+        60% { transform: translateX(-4px) rotate(-2deg); }
+        80% { transform: translateX(4px) rotate(2deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .vault-shake { animation: none; }
+    }
+</style>
