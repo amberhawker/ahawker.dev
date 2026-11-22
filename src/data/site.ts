@@ -4,24 +4,24 @@ export const profile = {
   host: 'ahawker.dev',
   pronouns: 'she/her',
   base: 'Kelowna, BC',
-  roles: ['Systems engineer', 'Software developer', 'IT specialist'],
+  roles: ['Software developer', 'Systems engineer', 'IT specialist'],
   tagline:
-    'I design software and infrastructure for systems where reliability, clear boundaries, and production behaviour matter.',
+    'I love solving complex problems, but the people behind them matter most. My goal is to build things that make a difference.',
   about: [
     'I’m a Computer Science student at UBC Okanagan working across infrastructure, robotics software, and the web.',
     'Day to day that means running production networks and servers, writing automation that makes operational work repeatable, and building autonomy software for an underwater robot.',
-    'I enjoy working on interesting technical challenges and meeting new people — you might see me bouncing between tasks and chatting at the same time.',
+    'I enjoy working on interesting technical challenges and connecting with other people more than anything else.',
   ],
   focus: ['Software', 'Systems', 'Robotics'],
   principle:
-    'I care about systems that are documented, observable, and boring to operate. Good infrastructure should be something you stop thinking about.',
+    'I believe learning is a continuous process, and the best way to learn is by doing.',
 } as const;
 
 export const focusAreas = [
   {
     title: 'Robotics & distributed systems',
     text: 'ROS 2 node architectures that connect sensor fusion pipelines, real-time message passing, state estimation, and autonomy loops into a system that must behave predictably without a network.',
-    stack: ['ROS 2 Jazzy / Humble', 'Python', 'C++'],
+    stack: ['ROS 2 Jazzy', 'Python', 'C++'],
   },
   {
     title: 'Tooling & automation',
@@ -41,17 +41,17 @@ export const focusAreas = [
 ] as const;
 
 export const education = {
-  program: 'Computer Science',
+  program: 'Computer Science BSc',
   school: 'University of British Columbia, Okanagan',
 };
 
 export const stack: { group: string; items: string[] }[] = [
-  { group: 'languages', items: ['Python', 'TypeScript', 'C++', 'C#', 'Rust', 'Bash', 'PowerShell'] },
+  { group: 'languages', items: ['Python', 'TypeScript', 'C++', 'C#', 'Java', 'Rust', 'Bash', 'PowerShell'] },
   { group: 'web', items: ['Astro', 'Next.js', 'React', 'Nuxt / Vue', 'Tailwind CSS'] },
   { group: 'systems', items: ['Linux (Debian / Arch)', 'Docker', 'systemd', 'Proxmox VE', 'ZFS', 'Caddy'] },
   { group: 'robotics', items: ['ROS 2 Jazzy / Humble', 'MicroPython'] },
   { group: 'automation', items: ['Playwright', 'Stagehand', 'Pandas', 'openpyxl', 'REST APIs'] },
-  { group: 'security', items: ['SentinelOne', 'Huntress', 'FortiGate', 'Network segmentation'] },
+  { group: 'security', items: ['SentinelOne', 'Adlumin', 'FortiGate', 'Network segmentation'] },
 ];
 
 export interface Link {
@@ -62,7 +62,7 @@ export interface Link {
 }
 
 export const links: Link[] = [
-  { id: 'email', label: 'email', value: 'ahawker374@gmail.com', href: 'mailto:ahawker374@gmail.com' },
+  { id: 'email', label: 'email', value: 'amber@ahawker.dev', href: 'mailto:amber@ahawker.dev' },
   { id: 'github', label: 'github', value: 'github.com/amberhawker', href: 'https://github.com/amberhawker' },
   {
     id: 'linkedin',
