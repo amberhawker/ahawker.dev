@@ -1,0 +1,32 @@
+---
+export const prerender = false;
+
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Window from '../../components/Window.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import PostList from '../../components/PostList.astro';
+
+const authed = Astro.locals.blogAuthed;
+
+const all = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const publicPosts = all.filter((p) => !p.data.private);
+---
+
+<Layout title="Blog" description="Notes and write-ups by Amber Hawker.">
+    <PageHeader command="cd ~/blog" title="Blog" lead="Notes and write-ups.">
+        <div class="mt-6">
+            <a href="/blog/private" class="btn btn-tactile bg-ink text-blush" aria-label="private posts">
+                <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" aria-hidden="true">
+                    <rect x="4" y="10" width="16" height="11" />
+                    <path d={authed ? 'M8 10V7a4 4 0 0 1 7.5-2' : 'M8 10V7a4 4 0 0 1 8 0v3'} />
+                </svg>
+                private/
+            </a>
+        </div>
+    </PageHeader>
+
+    <Window title="~/blog — ls -lt" command="ls -lt ~/blog" path="~/blog">
+        <PostList posts={publicPosts} />
+    </Window>
+</Layout>

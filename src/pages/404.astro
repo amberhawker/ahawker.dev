@@ -1,0 +1,29 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Window from '../components/Window.astro';
+
+const path = '~/missing';
+---
+
+<Layout title="404">
+	<div class="py-16 sm:py-24">
+		<Window title="zsh — 404" command={`cd ${path}`} term reveal={false} class="mx-auto max-w-2xl">
+			<p>cd: no such file or directory: <span data-missing-path>{path}</span></p>
+			<p class="mt-6"><a href="/" class="text-mint underline">cd ~</a> <span class="text-blush/55">to go home</span></p>
+		</Window>
+	</div>
+</Layout>
+
+<script>
+    const raw = window.location.pathname;
+    let requested = raw;
+    try {
+        requested = decodeURIComponent(raw);
+    } catch {
+        // Malformed escapes like "/missing%": show the path as typed.
+    }
+    document.querySelectorAll('[data-missing-path]').forEach((el) => (el.textContent = requested));
+    document.querySelectorAll('span').forEach((el) => {
+        if (el.childElementCount === 0 && el.textContent === 'cd ~/missing') el.textContent = `cd ${requested}`;
+    });
+</script>

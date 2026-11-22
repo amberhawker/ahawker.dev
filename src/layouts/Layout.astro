@@ -1,18 +1,73 @@
 ---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { profile } from '../data/site';
 import '../styles/global.css';
+
+interface Props {
+	title?: string;
+	description?: string;
+	term?: boolean;
+}
+
+const { title, description = profile.tagline, term = false } = Astro.props;
+const pageTitle = title ? `${title} · ${profile.host}` : `${profile.name} · ${profile.host}`;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
+		<link rel="preload" href="/fonts/NaturalMono-Regular.ttf" as="font" type="font/ttf" crossorigin />
+		<link rel="preload" href="/fonts/Redaction_50-Bold.woff2" as="font" type="font/woff2" crossorigin />
 		<meta name="generator" content={Astro.generator} />
-		<title>ahawker dev</title>
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#3d080c" />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<title>{pageTitle}</title>
+		<script is:inline>document.documentElement.classList.add('js');</script>
 	</head>
-	<body>
-		<slot />
+	<body class:list={['flex min-h-screen flex-col', term && 'term-page scanlines']}>
+		<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-ink focus:px-3 focus:py-2 focus:text-blush">
+			skip to content
+		</a>
+		<Header />
+		<main id="main" class="mx-auto w-full max-w-6xl flex-1 px-4 sm:px-6">
+			<slot />
+		</main>
+		<Footer />
 	</body>
 </html>
+
+<script>
+	import { animate } from 'animejs';
+
+	const targets = document.querySelectorAll<HTMLElement>('[data-reveal]');
+	const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	if (reduced || !('IntersectionObserver' in window)) {
+		targets.forEach((el) => (el.style.opacity = '1'));
+	} else {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (!entry.isIntersecting) return;
+					observer.unobserve(entry.target);
+					animate(entry.target, {
+						opacity: [0, 1],
+						translateY: [28, 0],
+						duration: 700,
+						ease: 'outExpo',
+					});
+				});
+			},
+			{ rootMargin: '0px 0px -8% 0px' },
+		);
+		targets.forEach((el) => observer.observe(el));
+	}
+</script>

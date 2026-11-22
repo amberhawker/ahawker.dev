@@ -1,14 +1,239 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+/* Fonts (shared with the Girls in Tech site):
+   - Headers: Redaction 50
+   - Body / terminal: Natural Mono */
+@font-face {
+  font-family: "Redaction 50";
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/Redaction_50-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Redaction 50";
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/Redaction_50-Bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Redaction 50";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/Redaction_50-Italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Natural Mono";
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/NaturalMono-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Natural Mono";
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/NaturalMono-Bold.ttf") format("truetype");
+}
+
+@theme {
+  --font-header: "Redaction 50", Georgia, serif;
+  --font-body: "Natural Mono", ui-monospace, monospace;
+  --font-sans: "Natural Mono", ui-monospace, monospace;
+  --font-mono: "Natural Mono", ui-monospace, monospace;
+
+  --color-ink: #3d080c;
+  --color-term: #2a0507;
+  --color-term-2: #4a0f13;
+  --color-blush: #ffd9d6;
+  --color-petal: #fbb5b0;
+  --color-rose: #f27f7f;
+  --color-hot: #d81e2c;
+  --color-mint: #4ef2bb;
+  --color-paper: #fff6f4;
+  --color-page: #ee4b4b;
+}
+
 :root,
 [data-theme],
 [data-theme="light"] {
   --font-header: "Redaction 50", Georgia, serif;
   --font-body: "Natural Mono", ui-monospace, monospace;
 
-  --color-base-100: #ffd8e8;
-  --color-base-200: #fbbdd8;
-  --color-base-300: #f69dc4;
-  --color-base-content: #3d0824;
+  --color-base-100: #ffd9d6;
+  --color-base-200: #fbb5b0;
+  --color-base-300: #f27f7f;
+  --color-base-content: #3d080c;
+  --color-primary: #d81e2c;
+  --color-primary-content: #ffffff;
 }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
+}
+
+html,
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-page);
+  color: var(--color-ink);
+}
+
+body {
+  background-image: radial-gradient(rgba(61, 8, 12, 0.22) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+h1,
+h2,
+h3,
+.font-header {
+  font-family: var(--font-header);
+}
+
+::selection {
+  background: var(--color-hot);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px dashed var(--color-hot);
+  outline-offset: 3px;
+}
+
+/* Neo-brutalist window, the shared frame for every section */
+.window {
+  border: 2px solid var(--color-ink);
+  border-radius: 10px;
+  background: var(--color-paper);
+  box-shadow: 5px 5px 0 var(--color-ink);
+  overflow: hidden;
+}
+
+.window-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.45rem 0.8rem;
+  background: var(--color-ink);
+  color: var(--color-blush);
+  font-size: 0.75rem;
+}
+
+.window-dots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.window-dots span {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 216, 232, 0.5);
+}
+
+.window-dots span:nth-child(1) { background: var(--color-hot); }
+.window-dots span:nth-child(2) { background: var(--color-rose); }
+.window-dots span:nth-child(3) { background: var(--color-mint); }
+
+.window-term {
+  background: var(--color-term);
+  color: var(--color-blush);
+}
+
+.prompt-user { color: var(--color-mint); }
+.prompt-path { color: var(--color-rose); }
+
+.btn-tactile {
+  border: 2px solid var(--color-ink) !important;
+  box-shadow: 3px 3px 0 var(--color-ink) !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.btn-tactile:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--color-ink) !important;
+}
+
+.btn-tactile:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--color-ink) !important;
+}
+
+.tag {
+  display: inline-block;
+  border: 1px solid var(--color-ink);
+  border-radius: 4px;
+  padding: 0.05rem 0.4rem;
+  font-size: 0.7rem;
+  background: var(--color-blush);
+}
+
+.cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  vertical-align: text-bottom;
+  background: var(--color-mint);
+  animation: blink 1.1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.scanlines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.025) 0,
+    rgba(255, 255, 255, 0.025) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+html:has(body.term-page),
+body.term-page {
+  background-color: var(--color-term);
+  color: var(--color-blush);
+}
+body.term-page { background-size: auto; }
+.term-page > header { background: color-mix(in srgb, var(--color-term) 90%, transparent); border-color: var(--color-term-2); }
+.term-page > header .text-paper { color: var(--color-mint); }
+.term-page > header .text-ink\/70 { color: var(--color-rose); }
+.term-page > header nav a:hover,
+.term-page > header nav a[aria-current] { background: var(--color-term-2); }
+.term-page > footer { border-color: var(--color-term-2); }
+
+html.js [data-reveal] {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .cursor { animation: none; }
+  html.js [data-reveal] { opacity: 1; }
+}
+
+.prose-term {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 48rem;
+  line-height: 1.75;
+}
+.prose-term h2 { font-size: 1.5rem; font-weight: 700; margin-top: 0.75rem; }
+.prose-term h2::before { content: "## "; color: var(--color-hot); }
+.prose-term h3 { font-size: 1.25rem; font-weight: 700; }
+.prose-term ul { display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.9rem; }
+.prose-term ul > li::before { content: "- "; color: var(--color-hot); }
+.prose-term ol { list-style: decimal; padding-left: 1.5rem; }
+.prose-term a { text-decoration: underline; text-decoration-color: var(--color-hot); text-underline-offset: 3px; }
+.prose-term a:hover { color: var(--color-hot); }
+.prose-term :not(pre) > code { background: var(--color-blush); border: 1px solid color-mix(in srgb, var(--color-ink) 25%, transparent); border-radius: 4px; padding: 0 0.3rem; font-size: 0.85em; }
+.prose-term pre { background: var(--color-term) !important; color: var(--color-blush); border: 2px solid var(--color-ink); border-radius: 6px; padding: 1rem; overflow-x: auto; font-size: 0.85rem; }
+.prose-term blockquote { border-left: 3px solid var(--color-hot); padding-left: 1rem; color: color-mix(in srgb, var(--color-ink) 80%, transparent); }
+.window-term .prose-term h2, .window-term .prose-term h3 { color: var(--color-blush); }
+.window-term .prose-term a:hover { color: var(--color-mint); }
+.window-term .prose-term :not(pre) > code { background: var(--color-term-2); border-color: color-mix(in srgb, var(--color-blush) 25%, transparent); }

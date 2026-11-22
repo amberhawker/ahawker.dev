@@ -1,0 +1,53 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Window from '../components/Window.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { stack } from '../data/site';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const roles = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order);
+
+const norm = (s: string) => s.toLowerCase().split(/\s*[/(]\s*/)[0].trim();
+const usedIn = (item: string) => {
+    const key = norm(item);
+    const hit = (tags: string[]) => tags.some((t) => norm(t) === key);
+    return [
+        ...roles.filter((r) => hit(r.data.stack)).map((r) => ({ label: r.data.org.replace(/\s*\(.*\)$/, ''), href: `/experience#${r.id}` })),
+        ...projects.filter((p) => hit(p.data.tags)).map((p) => ({ label: `${p.id}/`, href: `/projects/${p.id}` })),
+    ];
+};
+---
+
+<Layout title="Stack" description="Tools and technologies Amber Hawker works with.">
+    <PageHeader command="cat stack.json | jq" title="Stack" lead="The tools I reach for, and where each one shows up in my work." />
+
+    <div class="grid gap-8 md:grid-cols-2">
+        {stack.map((group, i) => (
+            <Window title={`stack.json → .${group.group}`} term={i % 3 === 0} bodyClass="h-full">
+                <h2 class:list={['text-2xl font-bold', i % 3 === 0 && 'text-blush']}>"{group.group}"</h2>
+                <ul class="mt-4 flex flex-col gap-3 text-sm">
+                    {group.items.map((item) => {
+                        const uses = usedIn(item);
+                        return (
+                            <li>
+                                <span class:list={['font-bold', i % 3 === 0 ? 'text-mint' : 'text-hot']}>"{item}"</span>
+                                {uses.length > 0 && (
+                                    <span class="block pl-4 text-xs opacity-75">
+                                        ↳{' '}
+                                        {uses.map((u, j) => (
+                                            <>
+                                                <a href={u.href} class="underline hover:opacity-100">{u.label}</a>
+                                                {j < uses.length - 1 && ', '}
+                                            </>
+                                        ))}
+                                    </span>
+                                )}
+                            </li>
+                        );
+                    })}
+                </ul>
+            </Window>
+        ))}
+    </div>
+</Layout>

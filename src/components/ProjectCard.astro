@@ -1,0 +1,39 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Window from './Window.astro';
+import Slider from './Slider.astro';
+
+interface Props {
+    project: CollectionEntry<'projects'>;
+    wide?: boolean;
+    class?: string;
+}
+
+const { project, wide = false, class: className } = Astro.props;
+const { title, year, role, imgs, shortDescription, tags, repo, live } = project.data;
+---
+
+<Window
+    title={`~/projects/${project.id}`}
+    class:list={['flex flex-col', className]}
+    bodyClass={wide ? 'grid flex-1 items-center gap-6 lg:grid-cols-2 lg:gap-10' : 'flex flex-1 flex-col gap-4'}
+>
+    <Slider imgs={imgs} class="aspect-[12/5]" />
+    <div class="flex h-full flex-col gap-4">
+    <div>
+        <p class="text-xs text-ink/60">{year}{role && ` · ${role}`}</p>
+        <h3 class="mt-1 text-2xl font-bold">
+            <a href={`/projects/${project.id}`} class="hover:text-hot">{title}</a>
+        </h3>
+    </div>
+    <p class="text-sm leading-relaxed text-ink/85">{shortDescription}</p>
+    <ul class="flex flex-wrap gap-1.5" aria-label="Stack">
+        {tags.map((tag) => <li class="tag">{tag}</li>)}
+    </ul>
+    <div class="mt-auto flex flex-wrap gap-2 pt-2 text-xs">
+        <a href={`/projects/${project.id}`} class="btn btn-sm btn-tactile bg-ink text-blush">cat README.md</a>
+        {repo && <a href={repo} target="_blank" rel="noopener" class="btn btn-sm btn-tactile bg-paper text-ink">source ↗</a>}
+        {live && <a href={live} target="_blank" rel="noopener" class="btn btn-sm btn-tactile bg-paper text-ink">live ↗</a>}
+    </div>
+    </div>
+</Window>

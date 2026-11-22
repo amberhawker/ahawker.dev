@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Window from '../components/Window.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { profile, links } from '../data/site';
+---
+
+<Layout title="Contact" description={`How to reach ${profile.name}.`}>
+    <PageHeader command="./contact.sh --help" title="Contact" lead="Interesting problem, project, or question? The fastest way to reach me is email." />
+
+    <div class="grid gap-8 md:grid-cols-[1fr_1fr]">
+        <Window title="contact.sh — bash" command="./contact.sh --links">
+            <ul class="flex flex-col gap-3 text-sm">
+                {links.map((l) => (
+                    <li>
+                        <a
+                            href={l.href}
+                            target={l.href.startsWith('mailto:') ? undefined : '_blank'}
+                            rel={l.href.startsWith('mailto:') ? undefined : 'noopener'}
+                            class="btn btn-tactile w-full justify-start bg-paper text-ink normal-case"
+                        >
+                            <span class="w-20 shrink-0 text-left text-hot">{l.label}</span>
+                            <span class="truncate">{l.value}</span>
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </Window>
+
+        <Window title="whoami" command="whoami" term>
+            <p class="text-lg text-mint">{profile.name} <span class="text-blush/55">({profile.pronouns})</span></p>
+            <p class="mt-2">{profile.roles.join(' · ')}</p>
+            <p class="mt-1 text-blush/60">{profile.base}</p>
+            <p class="mt-6 text-sm text-blush/80">{profile.about[2]}</p>
+        </Window>
+    </div>
+</Layout>

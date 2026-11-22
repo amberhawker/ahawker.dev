@@ -1,0 +1,26 @@
+---
+import { sections } from '../data/site';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (id: string) => path === `/${id}` || path.startsWith(`/${id}/`);
+---
+
+<header class="sticky top-0 z-40 border-b-2 border-ink bg-page/90 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-3 sm:px-6">
+        <a href="/" class="text-sm font-bold tracking-tight">
+            <span class="text-paper">amber</span>@ahawker.dev<span class="text-ink/70">:~$</span>
+            <span class="cursor ml-1" aria-hidden="true"></span>
+        </a>
+        <nav aria-label="Pages" class="-mx-1 flex max-w-full gap-1 overflow-x-auto text-xs">
+            {sections.map((s) => (
+                <a
+                    href={`/${s.id}`}
+                    aria-current={isActive(s.id) ? 'page' : undefined}
+                    class:list={['whitespace-nowrap rounded px-2 py-1 hover:bg-ink hover:text-blush', isActive(s.id) && 'bg-ink text-blush']}
+                >
+                    ./{s.id}
+                </a>
+            ))}
+        </nav>
+    </div>
+</header>

@@ -1,0 +1,309 @@
+---
+import { getCollection } from 'astro:content';
+import { profile, education, stack, links, sections } from '../data/site';
+
+const projects = (await getCollection('projects'))
+    .sort((a, b) => a.data.order - b.data.order)
+    .map((p) => ({ id: p.id, title: p.data.title, year: p.data.year, summary: p.data.shortDescription }));
+
+const experience = (await getCollection('experience'))
+    .sort((a, b) => a.data.order - b.data.order)
+    .map((e) => ({ id: e.id, title: e.data.title, org: e.data.org, summary: e.data.summary, stack: e.data.stack }));
+
+const payload = JSON.stringify({ profile, experience, education, stack, links, sections, projects }).replace(/</g, '\\u003c');
+---
+
+<div class="window flex h-[30rem] flex-col sm:h-[34rem]" id="terminal">
+    <div class="window-bar">
+        <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+        <span class="truncate">amber@ahawker.dev: ~ — zsh</span>
+        <span class="ml-auto hidden text-blush/60 sm:inline">press / to focus</span>
+    </div>
+    <div class="window-term scanlines flex min-h-0 flex-1 flex-col p-4 text-sm leading-relaxed sm:p-5">
+        <div data-term-output class="min-h-0 flex-1 overflow-y-auto pr-1 break-words" role="log" aria-live="polite" aria-label="Terminal output">
+            <noscript>
+                <p>{profile.name} ({profile.pronouns}) — {profile.roles.join(' · ')}</p>
+                <p class="mt-2 text-blush/70">JavaScript is off, so the terminal is read-only. Everything is also below.</p>
+            </noscript>
+        </div>
+        <form data-term-form class="mt-2 flex items-center gap-2 border-t border-blush/15 pt-2" autocomplete="off">
+            <label for="term-input" class="shrink-0">
+                <span class="prompt-user">amber@ahawker.dev</span>:<span class="prompt-path">~</span>$
+            </label>
+            <input
+                id="term-input"
+                data-term-input
+                type="text"
+                spellcheck="false"
+                autocapitalize="off"
+                class="min-w-0 flex-1 bg-transparent text-blush caret-mint outline-none placeholder:text-blush/35"
+                placeholder="type 'help'"
+                aria-label="Terminal command"
+            />
+        </form>
+    </div>
+</div>
+
+<script type="application/json" id="term-data" set:html={payload} />
+
+<script>
+    interface Project { id: string; title: string; year: number; summary: string }
+    interface Data {
+        profile: { name: string; pronouns: string; roles: string[]; base: string; tagline: string; about: string[]; focus: string[] };
+        experience: { id: string; title: string; org: string; summary: string; stack: string[] }[];
+        education: { program: string; school: string };
+        stack: { group: string; items: string[] }[];
+        links: { id: string; label: string; value: string; href: string }[];
+        sections: { id: string; file: string; command: string }[];
+        projects: Project[];
+    }
+
+    const dataEl = document.getElementById('term-data');
+    const output = document.querySelector<HTMLElement>('[data-term-output]');
+    const form = document.querySelector<HTMLFormElement>('[data-term-form]');
+    const input = document.querySelector<HTMLInputElement>('[data-term-input]');
+
+    if (dataEl && output && form && input) {
+        const data: Data = JSON.parse(dataEl.textContent || '{}');
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const history: string[] = [];
+        let historyIndex = 0;
+
+        const esc = (s: string) =>
+            s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] as string);
+        const dim = (s: string) => `<span class="text-blush/55">${s}</span>`;
+        const mint = (s: string) => `<span class="text-mint">${s}</span>`;
+        const rose = (s: string) => `<span class="text-rose">${s}</span>`;
+        const link = (href: string, label: string, external = false) =>
+            `<a class="underline decoration-rose underline-offset-2 hover:text-mint" href="${esc(href)}"${external ? ' target="_blank" rel="noopener"' : ''}>${esc(label)}</a>`;
+
+        const files = data.sections.map((s) => s.file);
+        const findProject = (arg: string) => {
+            const id = arg.replace(/^~?\/?(projects\/)?/, '').replace(/\/$/, '').toLowerCase();
+            return data.projects.find((p) => p.id === id);
+        };
+
+        const print = (html: string) => {
+            const line = document.createElement('div');
+            line.className = 'mb-2 whitespace-pre-wrap';
+            line.innerHTML = html;
+            output.appendChild(line);
+            output.scrollTop = output.scrollHeight;
+        };
+
+        const echoPrompt = (cmd: string) =>
+            print(`<span class="prompt-user">amber@ahawker.dev</span>:<span class="prompt-path">~</span>$ ${esc(cmd)}`);
+
+
+        const out = {
+            whoami: () =>
+                `${mint(esc(data.profile.name))} ${dim(`(${esc(data.profile.pronouns)})`)}\n${esc(data.profile.roles.join(' · '))}\n${dim(esc(data.profile.base))}`,
+            about: () => data.profile.about.map(esc).join('\n\n'),
+            experience: () =>
+                data.experience
+                    .map((r) => `${rose('[' + esc(r.title) + ']')} ${esc(r.org)}\n${dim(esc(r.summary))}`)
+                    .join('\n\n') + `\n\n${rose('[student]')} ${esc(data.education.program)} · ${esc(data.education.school)}`,
+            projects: () =>
+                data.projects
+                    .map((p) => `${dim('drwxr-xr-x  ' + p.year)}  ${link('/projects/' + p.id, p.id + '/')}  ${esc(p.title)}`)
+                    .join('\n') + `\n\n${dim("try: open " + (data.projects[0]?.id ?? ''))}`,
+            stack: () =>
+                '{\n' +
+                data.stack
+                    .map((g) => `  ${rose('"' + esc(g.group) + '"')}: [${g.items.map((i) => mint('"' + esc(i) + '"')).join(', ')}]`)
+                    .join(',\n') +
+                '\n}',
+            contact: () =>
+                data.links.map((l) => `${rose(esc(l.label.padEnd(9)))} ${link(l.href, l.value, !l.href.startsWith('mailto:'))}`).join('\n'),
+            ls: () => files.map((f) => (f.endsWith('/') ? mint(esc(f)) : esc(f))).join('   '),
+        };
+
+        const fileCommands: Record<string, () => string> = {
+            'about.txt': out.about,
+            'experience.log': out.experience,
+            'stack.json': out.stack,
+            'contact.sh': out.contact,
+        };
+
+        const help = () =>
+            [
+                ['whoami', 'who is this?'],
+                ['about', 'cat about.txt'],
+                ['experience', 'where I work and build'],
+                ['projects', 'ls ~/projects'],
+                ['open <project>', 'read a project README'],
+                ['stack', 'tools I reach for'],
+                ['contact', 'how to reach me'],
+                ['cd <page>', 'about · experience · projects · stack · blog · contact'],
+                ['ls · history · clear', 'the usual'],
+            ]
+                .map(([c, d]) => `<span class="text-mint">${esc(c)}</span><span class="text-blush/55">${esc(d)}</span>`)
+                .join('')
+                .replace(/^/, '<div class="grid grid-cols-[auto_1fr] gap-x-6 pl-3 whitespace-normal">')
+                .concat('</div>');
+
+        const commands: Record<string, (args: string[]) => string | void> = {
+            help,
+            whoami: out.whoami,
+            about: out.about,
+            experience: out.experience,
+            projects: out.projects,
+            stack: out.stack,
+            contact: out.contact,
+            education: () => `${esc(data.education.program)} · ${esc(data.education.school)}`,
+            ls: (args) => (args.some((a) => /projects/.test(a)) ? out.projects() : out.ls()),
+            cat: (args) => {
+                const target = args[0] ?? '';
+                if (fileCommands[target]) return fileCommands[target]();
+                const project = findProject(target.replace(/\/README\.md$/i, ''));
+                if (project) return `${mint(esc(project.title))} ${dim('(' + project.year + ')')}\n${esc(project.summary)}\n${link('/projects/' + project.id, 'read more →')}`;
+                return `cat: ${esc(target || '')}: No such file or directory`;
+            },
+            open: (args) => {
+                const project = findProject(args[0] ?? '');
+                if (!project) return `open: no such project. ${dim("try 'projects'")}`;
+                window.location.href = `/projects/${project.id}`;
+                return `opening ${esc(project.title)}…`;
+            },
+            cd: (args) => {
+                const target = (args[0] ?? '~').replace(/^(\.\/|~\/)/, '').replace(/\/$/, '');
+                if (target === '~' || target === '' || target === '..') {
+                    if (window.location.pathname === '/') window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+                    else window.location.href = '/';
+                    return;
+                }
+                const project = findProject(target);
+                if (project) {
+                    window.location.href = `/projects/${project.id}`;
+                    return;
+                }
+                const section = data.sections.find((s) => s.id === target || s.file.replace(/\/$/, '') === target);
+                if (!section) return `cd: no such file or directory: ${esc(target)}`;
+                window.location.href = `/${section.id}`;
+            },
+            pwd: () => '/home/amber',
+            date: () => new Date().toString(),
+            echo: (args) => esc(args.join(' ')),
+            history: () => history.map((h, i) => `${dim(String(i + 1).padStart(4))}  ${esc(h)}`).join('\n'),
+            clear: () => {
+                output.innerHTML = '';
+            },
+            sudo: () => 'amber is not in the sudoers file. This incident will be reported.',
+            exit: () => `there is no escape. ${dim("(try 'contact' instead)")}`,
+        };
+
+        const aliases: Record<string, string> = { './contact.sh': 'contact', 'contact.sh': 'contact', man: 'help', '?': 'help', github: 'contact', email: 'contact', linkedin: 'contact' };
+
+        const run = (raw: string, record = true) => {
+            const cmd = raw.trim();
+            echoPrompt(cmd);
+            if (!cmd) return;
+            if (record) {
+                history.push(cmd);
+                historyIndex = history.length;
+            }
+            const [name, ...args] = cmd.split(/\s+/);
+            const key = aliases[name] ?? name.toLowerCase();
+            const fn = commands[key];
+            const result = fn ? fn(args) : `zsh: command not found: ${esc(name)}. ${dim("type 'help'")}`;
+            if (typeof result === 'string' && result) print(result);
+        };
+
+        const complete = (value: string) => {
+            const parts = value.split(/\s+/);
+            const last = parts[parts.length - 1];
+            const command = aliases[parts[0]] ?? parts[0].toLowerCase();
+            const projectIds = data.projects.map((p) => p.id);
+            const sectionIds = data.sections.map((s) => s.id);
+            const pool =
+                parts.length === 1
+                    ? Object.keys(commands)
+                    : command === 'cat'
+                      ? [...files, ...projectIds]
+                      : command === 'open'
+                        ? projectIds
+                        : command === 'cd'
+                          ? [...sectionIds, ...files, ...projectIds]
+                          : [...files, ...projectIds, ...sectionIds];
+            const matches = pool.filter((c) => c.startsWith(last));
+            if (matches.length === 1) {
+                parts[parts.length - 1] = matches[0];
+                input.value = parts.join(' ') + (parts.length === 1 ? ' ' : '');
+            } else if (matches.length > 1) {
+                echoPrompt(value);
+                print(matches.map(esc).join('   '));
+            }
+        };
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            run(input.value);
+            input.value = '';
+        });
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp' && history.length) {
+                e.preventDefault();
+                historyIndex = Math.max(0, historyIndex - 1);
+                input.value = history[historyIndex];
+            } else if (e.key === 'ArrowDown' && history.length) {
+                e.preventDefault();
+                historyIndex = Math.min(history.length, historyIndex + 1);
+                input.value = history[historyIndex] ?? '';
+            } else if (e.key === 'Tab' && input.value) {
+                e.preventDefault();
+                complete(input.value);
+            } else if (e.key === 'l' && e.ctrlKey) {
+                e.preventDefault();
+                output.innerHTML = '';
+            }
+        });
+
+        output.addEventListener('click', () => {
+            if (!window.getSelection()?.toString()) input.focus({ preventScroll: true });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            const el = document.activeElement;
+            const typing = el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || (el as HTMLElement | null)?.isContentEditable;
+            if (e.key === '/' && !typing) {
+                e.preventDefault();
+                input.focus();
+            }
+        });
+
+        document.querySelectorAll<HTMLElement>('[data-run]').forEach((el) => {
+            el.addEventListener('click', (e) => {
+                e.preventDefault();
+                run(el.dataset.run ?? '');
+                document.getElementById('terminal')?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'nearest' });
+            });
+        });
+
+        const typeCommand = (cmd: string) =>
+            new Promise<void>((resolve) => {
+                if (reduced) {
+                    resolve();
+                    return;
+                }
+                let i = 0;
+                const tick = () => {
+                    input.value = cmd.slice(0, ++i);
+                    if (i < cmd.length) setTimeout(tick, 55);
+                    else setTimeout(resolve, 180);
+                };
+                tick();
+            });
+
+        const boot = async () => {
+            print(dim(`last login: ${new Date().toDateString()} on ttys000`));
+            for (const cmd of ['whoami', 'help']) {
+                await typeCommand(cmd);
+                input.value = '';
+                run(cmd, false);
+            }
+        };
+
+        boot();
+    }
+</script>
