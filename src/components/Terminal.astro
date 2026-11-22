@@ -289,8 +289,8 @@ const payload = JSON.stringify({ profile, experience, education, stack, links, s
                 let i = 0;
                 const tick = () => {
                     input.value = cmd.slice(0, ++i);
-                    if (i < cmd.length) setTimeout(tick, 55);
-                    else setTimeout(resolve, 180);
+                    if (i < cmd.length) setTimeout(tick, 110);
+                    else setTimeout(resolve, 400);
                 };
                 tick();
             });

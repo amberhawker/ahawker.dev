@@ -53,17 +53,30 @@ const pageTitle = title ? `${title} · ${profile.host}` : `${profile.name} · ${
 	if (reduced || !('IntersectionObserver' in window)) {
 		targets.forEach((el) => (el.style.opacity = '1'));
 	} else {
+		const crtIn = (el: HTMLElement) => {
+			animate(el, {
+				opacity: 1,
+				scaleX: { from: 0.02, to: 1, duration: 180 },
+				scaleY: [
+					{ from: 0.006, to: 0.006, duration: 180 },
+					{ to: 1, duration: 260, ease: 'outExpo' },
+				],
+				filter: { from: 'brightness(3) saturate(0)', to: 'brightness(1) saturate(1)', duration: 440 },
+				ease: 'linear',
+				onComplete: () => {
+					el.style.transform = '';
+					el.style.filter = '';
+				},
+			});
+			el.style.transformOrigin = 'center';
+		};
+
 		const observer = new IntersectionObserver(
 			(entries) => {
-				entries.forEach((entry) => {
+				entries.forEach((entry, index) => {
 					if (!entry.isIntersecting) return;
 					observer.unobserve(entry.target);
-					animate(entry.target, {
-						opacity: [0, 1],
-						translateY: [28, 0],
-						duration: 700,
-						ease: 'outExpo',
-					});
+					setTimeout(() => crtIn(entry.target as HTMLElement), index * 90);
 				});
 			},
 			{ rootMargin: '0px 0px -8% 0px' },
