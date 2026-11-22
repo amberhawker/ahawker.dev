@@ -14,4 +14,4 @@ featured: false
 
 Running Windows games through Wine on Linux works well once everything's configured, but the daily workflow of pointing binaries at the right prefix and flags is clunky.
 
-Wine Launcher wraps that in a small Python utility so launching a game is a single step instead of remembering which prefix and arguments each one needs. A simple quality-of-life tool, but one I actually used every day.
+Wine Launcher wraps that in a small Python utility so launching a game is a single step instead of remembering which prefix and arguments each one needs. A really simple quality-of-life tool, but one I used every day.

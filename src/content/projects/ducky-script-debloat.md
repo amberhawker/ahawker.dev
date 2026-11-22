@@ -13,4 +13,4 @@ featured: false
 
 A small script from my early interest in hardware tools and automation. It wraps the well-known Windows10Debloater PowerShell script in USB Rubber Ducky keystroke injection, so plugging in the device types out and launches the debloat process automatically.
 
-A tiny project, but it was my introduction to BadUSB-style tooling and to thinking about what a keyboard device can be trusted to do.
+A tiny project, but it was my introduction to BadUSB-style tooling and to thinking about what a keyboard device can be trusted to do. As well, I've used it to help out friends and family with quick IT needs.

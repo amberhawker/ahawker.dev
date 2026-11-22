@@ -14,4 +14,4 @@ featured: false
 
 A small blog engine I wrote in Rust, mostly as a way to learn the language's web ecosystem beyond CLI tooling. It reads Markdown posts off the filesystem, renders them to HTML with pulldown-cmark, and serves templated pages through Rocket.
 
-Templates use both Tera and Handlebars via rocket_dyn_templates, and serde handles post metadata. It's deliberately simple - no database, no admin panel - because the point was understanding the request lifecycle, templating, and Rust's ownership model in a real application rather than building another CMS.
+Templates use both Tera and Handlebars via rocket_dyn_templates, and serde handles post metadata. It's deliberately simple: no database, no admin panel. This is because the point was understanding the request lifecycle, templating, and Rust's ownership model in a real application rather than building another CMS.

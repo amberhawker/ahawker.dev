@@ -19,4 +19,4 @@ aligningserenity.com is a site I built for a local BodyTalk and BCST practitione
 
 The site is Astro with React islands, styled with Tailwind CSS 4 driven by editable design tokens. The interesting piece is the /admin studio: a password-protected GrapesJS editor that lets the client edit page content visually. In production, those edits are committed back to the repository through the GitHub API, which triggers a Workers Builds deploy and updates the live site.
 
-It's deployed on Cloudflare Workers with the Astro Cloudflare adapter - static pages served fast, with the on-demand admin routes running in the same Worker.
+It's deployed on Cloudflare Workers with the Astro Cloudflare adapter. Static pages are served fast, with the on-demand admin routes running in the same Worker.

@@ -21,6 +21,7 @@ Here's what it hosts:
 
 - **Jellyfin** for my media library
 - **Immich** for photo and video backup
+- **Cove Webfishing** server for my public, 1000+ user Webfishing community
 - **A Bluesky PDS**, my own AT Protocol personal data server
 - **Websites and personal projects**, including staging copies of things I'm working on
 

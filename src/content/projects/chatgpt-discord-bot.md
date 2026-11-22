@@ -12,6 +12,6 @@ repo: "https://github.com/amberhawker/ChatGPT-Discord-Bot"
 featured: false
 ---
 
-Built in the early ChatGPT days, when everyone was trying to get it into every chat app they used. The idea was to make talking to it feel like talking to a person in the channel rather than running a command.
+Built in the early ChatGPT days, when everyone was trying to get it into every chat app they used. The idea was to make talking to it feel like talking to a person in the channel rather than running a command. The project was a quick proof of concept, and worked well enough at the time. It was a fun day project that gave me some more experience.
 
 The trick was splitting the work between two Discord primitives: the bot account reads messages and handles commands, while a webhook posts the ChatGPT response back to the channel. Since webhooks can post with arbitrary names and avatars, the replies look like an ordinary participant in the conversation.
