@@ -2,7 +2,7 @@
 title: "Aligning Serenity"
 year: 2026
 role: "Client website · design & development"
-shortDescription: "A production website for a Kelowna wellness practitioner - Astro marketing pages with a custom in-browser content editor so the client can update the site themselves."
+shortDescription: "A production website for a Kelowna wellness practitioner. Astro marketing pages with a custom in-browser content editor so the client can update the site themselves."
 highlights:
   - "Astro static marketing pages with a session-protected /admin studio"
   - "GrapesJS-based visual editor built as React islands"

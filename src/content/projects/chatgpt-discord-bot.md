@@ -2,11 +2,11 @@
 title: "ChatGPT Discord Bot"
 year: 2022
 role: "Personal project"
-shortDescription: "A Discord bot that turns a channel into a conversation with ChatGPT - a bot account reads messages and a webhook replies, so chatting feels natural instead of command-driven."
+shortDescription: "A Discord bot that turns a channel into a conversation with ChatGPT. A bot account reads messages and a webhook replies, so chatting feels natural instead of command-driven."
 highlights:
   - "Bot account reads channel messages and routes them to ChatGPT"
   - "Webhook replies inline, so responses feel conversational rather than like command output"
-  - "No prefix or slash commands needed - just message the channel"
+  - "No prefix or slash commands needed: just message the channel"
 tags: ["Python", "Discord API", "Webhooks", "ChatGPT"]
 repo: "https://github.com/amberhawker/ChatGPT-Discord-Bot"
 featured: false

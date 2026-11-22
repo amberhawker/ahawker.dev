@@ -7,7 +7,7 @@ imgs:
     alt: "UBC Okanagan Girls In Tech, ACM-W Student Chapter logo"
   - path: "/assets/projects/git/git2.png"
     alt: "UBC Okanagan Girls In Tech logo with transparent background"
-shortDescription: "The website for UBC Okanagan Girls in Tech, an ACM-W student chapter - retro desktop styling, animated sections, and an admin editor so the club can manage its own content."
+shortDescription: "The website for UBC Okanagan Girls in Tech, an ACM-W student chapter. Retro desktop styling, animated sections, and an admin editor so the club can manage its own content."
 highlights:
   - "Astro content collections for events, execs, sponsors, and links"
   - "Session-based /admin editor that persists changes through the GitHub API"

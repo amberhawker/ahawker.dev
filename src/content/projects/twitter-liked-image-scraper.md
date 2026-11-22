@@ -14,4 +14,4 @@ featured: false
 
 I had years of liked tweets that were effectively my meme and art archive, and when it became clear likes might go private or inaccessible, I wanted a local copy.
 
-This PowerShell script walks the liked tweets endpoint, extracts image URLs, and downloads everything to disk. It's a small script, but it's a good example of the kind of tool I like writing - a hundred lines that automate away a problem I actually had.
+This PowerShell script walks the liked tweets endpoint, extracts image URLs, and downloads everything to disk. It's a small script, but it's a good example of the kind of tool I like writing: a hundred lines that automate away a problem I actually had.

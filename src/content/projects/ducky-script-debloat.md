@@ -2,7 +2,7 @@
 title: "Ducky Script Debloat"
 year: 2022
 role: "Learning project"
-shortDescription: "A USB Rubber Ducky script that automates running a Windows 10 debloat script - my first taste of keystroke-injection tooling."
+shortDescription: "A USB Rubber Ducky script that automates running a Windows 10 debloat script. My first taste of keystroke-injection tooling."
 highlights:
   - "Rubber Ducky keystroke-injection script"
   - "Automates launching the Windows10Debloater PowerShell script"

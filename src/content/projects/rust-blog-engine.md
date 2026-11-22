@@ -2,7 +2,7 @@
 title: "Rust Blog Engine"
 year: 2026
 role: "Personal project"
-shortDescription: "A small personal blog engine written in Rust - Markdown posts rendered to HTML with templated pages, built to learn Rocket and Rust's web ecosystem."
+shortDescription: "A small personal blog engine written in Rust. Markdown posts rendered to HTML with templated pages, built to learn Rocket and Rust's web ecosystem."
 highlights:
   - "Rocket web framework for routing and request handling"
   - "Markdown posts rendered with pulldown-cmark"

@@ -2,7 +2,7 @@
 title: "Discord Server Bot"
 year: 2023
 role: "Personal project"
-shortDescription: "A nextcord-based Discord bot for my own server - a proper bot account with prefix commands, a cog module system, and permission-gated admin features."
+shortDescription: "A nextcord-based Discord bot for a friend's public server, with a proper bot account, prefix commands, a cog module system, and permission-gated admin features."
 highlights:
   - "Built on nextcord with a real bot account"
   - "Cog-based module system for organizing features"
