@@ -6,8 +6,10 @@ import ProjectCard from '../components/ProjectCard.astro';
 import { getCollection } from 'astro:content';
 import { profile, education, stack, links } from '../data/site';
 
-const experience = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order);
-const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const experience = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id));
+const projects = (await getCollection('projects')).sort(
+	(a, b) => a.data.order - b.data.order || b.data.year - a.data.year || a.id.localeCompare(b.id),
+);
 const featured = projects.filter((project) => project.data.featured);
 const others = projects.filter((project) => !project.data.featured);
 

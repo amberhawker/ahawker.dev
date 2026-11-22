@@ -5,8 +5,10 @@ import Window from '../components/Window.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { stack } from '../data/site';
 
-const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
-const roles = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order);
+const projects = (await getCollection('projects')).sort(
+    (a, b) => a.data.order - b.data.order || b.data.year - a.data.year || a.id.localeCompare(b.id),
+);
+const roles = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id));
 
 const norm = (s: string) => s.toLowerCase().split(/\s*[/(]\s*/)[0].trim();
 const usedIn = (item: string) => {

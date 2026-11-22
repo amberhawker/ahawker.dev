@@ -6,7 +6,9 @@ import Window from '../../components/Window.astro';
 import Slider from '../../components/Slider.astro';
 
 export const getStaticPaths = (async () => {
-	const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+	const projects = (await getCollection('projects')).sort(
+		(a, b) => a.data.order - b.data.order || b.data.year - a.data.year || a.id.localeCompare(b.id),
+	);
 	return projects.map((project, i) => ({
 		params: { id: project.id },
 		props: { project, prev: projects[i - 1], next: projects[i + 1] },

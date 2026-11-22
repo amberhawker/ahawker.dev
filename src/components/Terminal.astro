@@ -3,11 +3,11 @@ import { getCollection } from 'astro:content';
 import { profile, education, stack, links, sections } from '../data/site';
 
 const projects = (await getCollection('projects'))
-    .sort((a, b) => a.data.order - b.data.order)
+    .sort((a, b) => a.data.order - b.data.order || b.data.year - a.data.year || a.id.localeCompare(b.id))
     .map((p) => ({ id: p.id, title: p.data.title, year: p.data.year, summary: p.data.shortDescription }));
 
 const experience = (await getCollection('experience'))
-    .sort((a, b) => a.data.order - b.data.order)
+    .sort((a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id))
     .map((e) => ({ id: e.id, title: e.data.title, org: e.data.org, summary: e.data.summary, stack: e.data.stack }));
 
 const payload = JSON.stringify({ profile, experience, education, stack, links, sections, projects }).replace(/</g, '\\u003c');
