@@ -1,46 +1,35 @@
-# Astro Starter Kit: Basics
+# ahawker.dev
+
+My personal site. Built with Astro, Tailwind and daisyUI, and deployed to Cloudflare Workers.
+
+## Running it locally
 
 ```sh
-npm create astro@latest -- --template basics
+npm install
+cp .dev.vars.example .dev.vars   # then fill in real values
+npm run dev                      # http://localhost:4321
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Other scripts:
 
-## 🚀 Project Structure
+- `npm run build`: build to `dist/`
+- `npm run preview`: build and serve the production output
+- `npm run typecheck`: `astro check`
+- `npm run deploy`: build and `wrangler deploy`
 
-Inside of your Astro project, you'll see the following folders and files:
+## Content
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+Everything is markdown in `src/content/`. The schemas are in `src/content.config.ts`.
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+- `projects/`: project pages. Set `featured: true` to show one on the home page.
+- `experience/`: jobs and orgs.
+- `blog/`: posts. Set `draft: true` to hide a post and `private: true` to put it behind the blog password.
 
-## 🧞 Commands
+## Private blog posts
 
-All commands are run from the root of the project, from a terminal:
+Private posts need two secrets:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+- `BLOG_PASSWORD`: the password readers enter
+- `SESSION_SECRET`: a long random string used to sign the session cookie
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Put them in `.dev.vars` for local dev. In production, set them with `wrangler secret put <NAME>`. Login attempts are limited to 5 per minute per IP (see `wrangler.jsonc`).
