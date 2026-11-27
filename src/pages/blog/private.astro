@@ -4,8 +4,10 @@ export const prerender = false;
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import PostList from '../../components/PostList.astro';
+import { getLoginCsrfToken } from '../../lib/blog-auth/csrf';
 
 const authed = Astro.locals.blogAuthed;
+const csrf = authed ? undefined : getLoginCsrfToken(Astro.cookies);
 const error = Astro.url.searchParams.get('error');
 const nextParam = Astro.url.searchParams.get('next') ?? '/blog/private';
 const next = /^\/blog(\/[\w-]*)?$/.test(nextParam) ? nextParam : '/blog/private';
@@ -85,6 +87,7 @@ const unlockedArt = String.raw`
                         <p class="mt-2 text-rose">but do you have the password?...</p>
                     </div>
                     <input type="hidden" name="next" value={next} />
+                    <input type="hidden" name="csrf" value={csrf} />
                     <div class="flex w-full max-w-md flex-wrap gap-3">
                         <label for="blog-password" class="sr-only">password</label>
                         <input

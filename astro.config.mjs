@@ -9,6 +9,7 @@ export default defineConfig({
     imageService: 'compile',
   }),
   vite: {
+    build: { assetsInlineLimit: 0 },
     plugins: [tailwindcss()],
   },
 });
