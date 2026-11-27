@@ -1,6 +1,7 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
+import { isValidLoginCsrfToken } from '../../../lib/blog-auth/csrf';
 import { allowLoginAttempt, getBlogAuthEnv } from '../../../lib/blog-auth/env';
 import { createSessionToken, passwordsMatch, sessionCookie } from '../../../lib/blog-auth/session';
 
@@ -9,10 +10,14 @@ const safeNext = (value: FormDataEntryValue | null) => {
     return /^\/blog(\/[\w-]*)?$/.test(next) ? next : '/blog/private';
 };
 
-export const POST: APIRoute = async ({ request, cookies, redirect, url, clientAddress }) => {
+export const POST: APIRoute = async ({ request, cookies, redirect, clientAddress }) => {
     const form = await request.formData().catch(() => null);
-    const next = safeNext(form?.get('next') ?? null);
-    const password = String(form?.get('password') ?? '');
+    if (!form || !(await isValidLoginCsrfToken(cookies, form.get('csrf')))) {
+        return new Response('Invalid login form. Reload the vault page and try again.', { status: 403 });
+    }
+
+    const next = safeNext(form.get('next'));
+    const password = String(form.get('password') ?? '');
     const fail = (error: string) => redirect(`/blog/private?error=${error}&next=${encodeURIComponent(next)}`, 303);
 
     const auth = getBlogAuthEnv();
@@ -21,6 +26,6 @@ export const POST: APIRoute = async ({ request, cookies, redirect, url, clientAd
     if (!(await allowLoginAttempt(clientKey))) return fail('rate');
     if (!password || !(await passwordsMatch(password, auth.BLOG_PASSWORD))) return fail('password');
 
-    cookies.set(sessionCookie.name, await createSessionToken(auth.SESSION_SECRET), sessionCookie.options(url.protocol === 'https:'));
+    cookies.set(sessionCookie.name, await createSessionToken(auth.SESSION_SECRET), sessionCookie.options);
     return redirect(next, 303);
 };

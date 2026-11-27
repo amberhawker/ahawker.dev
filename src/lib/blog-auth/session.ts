@@ -65,5 +65,5 @@ export async function isValidSessionToken(secret: string, token: string | undefi
 
 export const sessionCookie = {
     name: COOKIE_NAME,
-    options: (secure: boolean) => ({ path: '/', httpOnly: true, sameSite: 'lax' as const, secure, maxAge: MAX_AGE_SECONDS }),
+    options: { path: '/', httpOnly: true, sameSite: 'lax' as const, secure: true, maxAge: MAX_AGE_SECONDS },
 };
